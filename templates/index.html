@@ -1,9 +1,10 @@
 {% extends "base.html" %}
 
-{% block content %}
-    TODO
+{% block auth %}
+    <a href="/login" class="header-link">Вход</a>
+    <a href="/register" class="header-link">Регистрация</a>
 {% endblock %}
 
-{% block pagination %}
-    {{ pagination_string | safe }}
+{% block content %}
+    TODO
 {% endblock %}

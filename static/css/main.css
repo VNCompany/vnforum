@@ -122,3 +122,10 @@ menu>li:first-child{
 .pagination ul{
     padding: 0;
 }
+
+.flat-button{
+    transition: .2s all;
+    border: 1px solid dimgray;
+    border-radius: 10px;
+    padding: 5px 10px;
+}

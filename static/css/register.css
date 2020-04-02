@@ -1,0 +1,51 @@
+.input-error{
+    margin: 0 0 10px 5px;
+    border-left: 2px solid red;
+    padding: 5px;
+}
+#sex{
+    list-style: none;
+    padding-left: 0;
+}
+#sex li{
+    display: inline-block;
+    margin-right: 10px;
+}
+
+.auth-form{
+    margin: 10px auto;
+    padding: 45px;
+    width: 350px;
+    background: white;
+    border-radius: 5px;
+}
+label:not([for="sex"]){
+    display: block;
+    padding-bottom: 3px;
+}
+#sex label{
+    display: inline;
+}
+
+input[type=text],input[type=password],input[type=email]{
+    border: 1px solid gray;
+    border-radius: 4px;
+    background: ghostwhite;
+    padding: 5px 10px;
+    width: 94%;
+}
+
+input[type=submit]{
+    display: block;
+    width: 150px;
+    margin: 30px auto 0 auto;
+    background: #2196F3;
+    color: white;
+    border-color: transparent;
+}
+input[type=submit]:hover{
+    background: white;
+    color: dimgray;
+    border-color: black;
+    cursor: pointer;
+}

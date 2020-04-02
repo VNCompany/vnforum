@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+
+{% block auth %}
+    <a href="/register" class="header-link">Авторизация</a>
+{% endblock %}
+
+{% block content %}
+    <div class="auth-form">
+        <h1 style="text-align: center; font-size: 22px; margin-top: 0">Авторизация</h1>
+        {% if error is defined %}
+            <div class="input-error">{{ error }}</div>
+        {% endif %}
+        <form method="post">
+            {{ form.hidden_tag() }}
+            <p>
+                {{ form.login.label }}
+                {{ form.login() }}
+            </p>
+            {% for error in form.login.errors %}
+                <div class="input-error">{{ error }}</div>
+            {% endfor %}
+
+            <p>
+                {{ form.password.label }}
+                {{ form.password() }}
+            </p>
+            {% for error in form.password.errors %}
+                <div class="input-error">{{ error }}</div>
+            {% endfor %}
+
+            <p>
+                {{ form.remember_me.label }}
+                {{ form.remember_me() }}
+            </p>
+            {% for error in form.remember_me.errors %}
+                <div class="input-error">{{ error }}</div>
+            {% endfor %}
+
+            <input class="flat-button" type="submit" value="Войти">
+        </form>
+    </div>
+{% endblock %}

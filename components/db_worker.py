@@ -1,11 +1,30 @@
 import sqlalchemy as sql
 from sqlalchemy.orm import Session
-import db_session
+
+from models.user_model import User
 
 
 class DataBaseWorker:
-    def __init__(self, session: Session):
-        self.session = session
+    @staticmethod
+    def add_user(session: Session, user: User):
+        for u in session.query(User).all():
+            if u.login == user.login:
+                return "Ошибка. Пользователь с таким логином уже существует."
+            elif u.email == user.email:
+                return "Ошибка. Пользователь с таким email уже существует"
+            elif u.nickname == user.nickname:
+                return "Ошибка. Пользователь с таким никнеймом уже существует"
+        session.add(user)
+        session.commit()
+        return "ok"
 
-
-dbw = DataBaseWorker(db_session.create_session())
+    @staticmethod
+    def check_user(session: Session, login: str, pw: str):
+        user = session.query(User).filter(User.login == login).first()
+        if user:
+            if user.check_password(pw):
+                return "ok"
+            else:
+                return "Неверный логин или пароль."
+        else:
+            return "Неверный логин или пароль."
