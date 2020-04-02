@@ -7,10 +7,13 @@ class Controller:
     __title__ = "Page"
     view_includes = {}
 
-    jquery_enabled = False
+    jquery_enabled = True
 
     def __init__(self):
         self.css("main.css")
+        self.view_includes["js"] = ""
+        if self.jquery_enabled:
+            self.view_includes["js"] += f'<script src="{self.static("js/jquery.js")}">\n'
 
     @staticmethod
     def static(path: str):
@@ -32,9 +35,6 @@ class Controller:
             self.view_includes["css"] += f'<link rel="stylesheet" href="{self.static("css/" + name)}">\n'
 
     def javascript(self, *names):
-        self.view_includes["js"] = ""
-        if self.jquery_enabled:
-            self.view_includes["js"] += f'<script src="{self.static("js/jquery.js")}">\n'
         for name in names:
             self.view_includes["js"] += f'<script src="{self.static("js/" + name)}">\n'
 

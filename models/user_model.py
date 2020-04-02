@@ -2,6 +2,7 @@ import datetime
 import sqlalchemy as sql
 from db_session import SqlAlchemyBase
 from werkzeug.security import generate_password_hash, check_password_hash
+from flask_login import UserMixin
 
 # Statuses:
 # 0 - not_authenticated
@@ -10,7 +11,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 # 3 - banned
 
 
-class User(SqlAlchemyBase):
+class User(SqlAlchemyBase, UserMixin):
     __tablename__ = "users"
 
     id = sql.Column(sql.Integer, primary_key=True, autoincrement=True)

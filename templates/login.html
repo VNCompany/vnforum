@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 
 {% block auth %}
-    <a href="/register" class="header-link">Авторизация</a>
+    <a href="/register" class="header-link">Регистрация</a>
 {% endblock %}
 
 {% block content %}
@@ -29,8 +29,8 @@
             {% endfor %}
 
             <p>
-                {{ form.remember_me.label }}
                 {{ form.remember_me() }}
+                {{ form.remember_me.label }}
             </p>
             {% for error in form.remember_me.errors %}
                 <div class="input-error">{{ error }}</div>

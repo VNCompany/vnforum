@@ -23,8 +23,8 @@ class DataBaseWorker:
         user = session.query(User).filter(User.login == login).first()
         if user:
             if user.check_password(pw):
-                return "ok"
+                return "ok", user
             else:
-                return "Неверный логин или пароль."
+                return "Неверный логин или пароль.",
         else:
-            return "Неверный логин или пароль."
+            return "Неверный логин или пароль.",

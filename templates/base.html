@@ -16,7 +16,17 @@
         <div class="header-desc">Форум для программистов</div>
     </div>
     <div class="auth">
-        {% block auth %}{% endblock %}
+        {% if current_user.is_authenticated %}
+            <a class="header-link" style="cursor: pointer" id="profile-btn">ClouDead48</a>
+            <div class="profile-popup">
+                <ul>
+                    <li>Профиль</li>
+                    <li>Выход</li>
+                </ul>
+            </div>
+        {% else %}
+            {% block auth %}{% endblock %}
+        {% endif %}
     </div>
 </header>
 <nav class="menu">
