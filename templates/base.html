@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="shortcut icon" href="/static/img/favicon.ico" type="image/ico">
+    {% if css is defined %}
+        {{ css | safe }}
+    {% endif %}
+    <title>{{ title }}</title>
+</head>
+<body>
+<header>
+    <div class="header-title">
+        <div class="header-text"><a href="/index">VN Forum</a></div>
+        <div class="header-desc">Форум для программистов</div>
+    </div>
+    <div class="auth">
+        <a href="/login" class="header-link">Войти</a>
+        <a href="/register" class="header-link">Регистрация</a>
+    </div>
+</header>
+<nav class="menu">
+    <menu>
+        <li><a href="#" class="header-link menu-link">Форум</a></li>
+        <li><a href="#" class="header-link menu-link">Информация</a></li>
+        <li><a href="#" class="header-link menu-link">Поиск</a></li>
+    </menu>
+</nav>
+
+<div class="main-content">
+    {% block content %}{% endblock %}
+</div>
+
+{% block pagination %}{% endblock %}
+
+{% if js is defined %}
+    {{ js | safe }}
+{% endif %}
+</body>
+</html>
