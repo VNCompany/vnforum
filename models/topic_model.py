@@ -4,7 +4,6 @@ from sqlalchemy import orm
 from db_session import SqlAlchemyBase
 
 from models.user_model import User
-from models.post_model import Post
 
 
 class Topic(SqlAlchemyBase):
@@ -12,7 +11,7 @@ class Topic(SqlAlchemyBase):
 
     id = sql.Column(sql.Integer, primary_key=True, autoincrement=True)
     user_id = sql.Column(sql.Integer, sql.ForeignKey('users.id'))
-    # TODO: Добавить ид категории
+    category_id = sql.Column(sql.Integer, sql.ForeignKey('categories.id'))
     title = sql.Column(sql.String)
     tags = sql.Column(sql.String)
     date = sql.Column(sql.DateTime, default=datetime.datetime.now)
@@ -20,6 +19,7 @@ class Topic(SqlAlchemyBase):
     is_closed = sql.Column(sql.Boolean, default=False)
 
     user = orm.relation("User")
+    category = orm.relation("Category")
     posts = orm.relation("Post", back_populates="topic")
 
     def can_change(self, user: User):
