@@ -51,6 +51,12 @@ def logout():
     return redirect("/")
 
 
+@app.route("/information")
+@login_required
+def information():
+    pass
+
+
 if __name__ == '__main__':
     dbs.global_init("db/database.sqlite")
     app.run(host="127.0.0.1", port=5000)

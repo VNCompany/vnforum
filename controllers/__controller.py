@@ -10,10 +10,10 @@ class Controller:
     jquery_enabled = True
 
     def __init__(self):
+        self.view_includes["css"] = ""
         self.css("main.css")
         self.view_includes["js"] = ""
-        if self.jquery_enabled:
-            self.view_includes["js"] += f'<script src="{self.static("js/jquery.js")}">\n'
+        self.javascript("jquery.js", "main.js")
 
     @staticmethod
     def static(path: str):
@@ -36,7 +36,7 @@ class Controller:
 
     def javascript(self, *names):
         for name in names:
-            self.view_includes["js"] += f'<script src="{self.static("js/" + name)}">\n'
+            self.view_includes["js"] += f'<script src="{self.static("js/" + name)}"></script>\n'
 
     def pagination(self, max_page, pos: int, link: str):
         self.view_includes["pagination_string"] = html_pagination(max_page, pos, link)

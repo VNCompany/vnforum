@@ -17,13 +17,8 @@
     </div>
     <div class="auth">
         {% if current_user.is_authenticated %}
-            <a class="header-link" style="cursor: pointer" id="profile-btn">ClouDead48</a>
-            <div class="profile-popup">
-                <ul>
-                    <li>Профиль</li>
-                    <li>Выход</li>
-                </ul>
-            </div>
+            <a class="header-link" style="cursor: pointer" id="profile-btn">{{ current_user.nickname }}</a>
+            {% include "_profile_popup.html" %}
         {% else %}
             {% block auth %}{% endblock %}
         {% endif %}
