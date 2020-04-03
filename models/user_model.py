@@ -3,6 +3,7 @@ import sqlalchemy as sql
 from db_session import SqlAlchemyBase
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import UserMixin
+from sqlalchemy import orm
 
 # Statuses:
 # 0 - not_authenticated
@@ -27,12 +28,14 @@ class User(SqlAlchemyBase, UserMixin):
     rating = sql.Column(sql.Integer, default=0)
     votes = sql.Column(sql.String, default="")
 
+    posts = orm.relation('Post', back_populates="user")
+
     def vote(self, user_id: int, value: int):
         if str(user_id) not in self.votes.split(",") and self.id != user_id:
             self.rating += value
             self.votes += ("," if len(self.votes) > 0 else "") + str(user_id)
 
-    def id_admin(self):
+    def is_admin(self):
         return self.status == 2
 
     def is_banned(self):
