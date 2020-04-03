@@ -29,6 +29,7 @@ class User(SqlAlchemyBase, UserMixin):
     votes = sql.Column(sql.String, default="")
 
     posts = orm.relation('Post', back_populates="user")
+    topics = orm.relation('Topic', back_populates="user")
 
     def vote(self, user_id: int, value: int):
         if str(user_id) not in self.votes.split(",") and self.id != user_id:

@@ -11,15 +11,17 @@ class Post(SqlAlchemyBase):
 
     id = sql.Column(sql.Integer, primary_key=True, autoincrement=True)
     user_id = sql.Column(sql.Integer, sql.ForeignKey('users.id'))
-    # TODO: Добавить поле с id топика
-    title = sql.Column(sql.String)
+    content = sql.Column(sql.String)
+    topic_id = sql.Column(sql.Integer, sql.ForeignKey('topics.id'))
     date = sql.Column(sql.DateTime, default=datetime.datetime.now)
     last_date = sql.Column(sql.DateTime, default=datetime.datetime.now)
-    content = sql.Column(sql.String)
 
     user = orm.relation('User')
+    topic = orm.relation('Topic')
 
     def can_change(self, user: User):
+        if user.is_banned():
+            return False
         user.id == self.user_id or user.is_admin()
 
     def can_delete(self, user: User):
