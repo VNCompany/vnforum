@@ -6,5 +6,23 @@
 {% endblock %}
 
 {% block content %}
-    TODO
+    <h2>Категории:</h2>
+
+    {% for cat in cats %}
+        <div class="category">
+            <div class="category-icon">
+                <i class="fa {{ cat.icon }}"></i>
+            </div>
+            <div class="category-desc">
+                <a href="category/{{ cat.id }}" class="category-link">{{ cat.title }}</a>
+                <p>
+                    {{ cat.description }}
+                </p>
+            </div>
+            <div class="category-counter">
+                <p>Темы</p>
+                <p>{{ cat.topics | length }}</p>
+            </div>
+        </div>
+    {% endfor %}
 {% endblock %}

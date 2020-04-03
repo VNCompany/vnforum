@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+
+{% block auth %}
+    <a href="/login" class="header-link">Вход</a>
+    <a href="/register" class="header-link">Регистрация</a>
+{% endblock %}
+
+{% block content %}
+    <div class="uni-form">
+        <h2>{{ title }}</h2>
+        {% if error is defined %}
+            <div class="input-error">{{ error }}</div>
+        {% endif %}
+        <form method="post" enctype="multipart/form-data">
+            {{ form.hidden_tag() }}
+            <p>
+                {{ form.title.label }}
+                {{ form.title() }}
+            </p>
+            <p>
+                {{ form.description.label }}
+                {{ form.description() }}
+            </p>
+            <p>
+                {{ form.icon.label }}
+                {{ form.icon() }}
+            </p>
+            {% for error in form.icon.errors %}
+                <div class="input-error">{{ error }}</div>
+            {% endfor %}
+            <p>
+                <input type="submit" value="Ок" class="flat-button">
+            </p>
+        </form>
+    </div>
+{% endblock %}

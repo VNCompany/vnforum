@@ -1,4 +1,5 @@
-from flask import Flask, redirect
+import os
+from flask import Flask, redirect, send_from_directory
 import db_session as dbs
 import flask_login as fl
 from flask_login import login_required, logout_user
@@ -7,12 +8,19 @@ from controllers.index_controller import IndexController
 from controllers.register_controller import RegisterController
 from controllers.login_controller import LoginController
 from controllers.information_controller import InformationController
+from controllers.category_add_controller import CategoryAddController
 from controllers.error404_controller import Error404Controller
 
 from models.user_model import User
 
+UPLOAD_FOLDER = './uploads'
+
 app = Flask(__name__)
+
 app.config['SECRET_KEY'] = "yandexlyceum_secret_key"
+app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+
 login_manager = fl.LoginManager()
 login_manager.init_app(app)
 
@@ -27,7 +35,7 @@ def load_user(user_id):
 @app.route("/index")
 def index():
     controller = IndexController()
-    return controller.view()
+    return controller.view(dbs.create_session())
 
 
 @app.route("/register", methods=['GET', 'POST'])
@@ -58,6 +66,17 @@ def logout():
 def information():
     controller = InformationController()
     return controller.view()
+
+
+@app.route("/add", methods=['GET', 'POST'])
+def category_add():
+    controller = CategoryAddController()
+    return controller.view(dbs.create_session())
+
+
+@app.route("/uploads/profiles/<filename>")
+def get_profile_uploads(filename):
+    return send_from_directory(os.path.join(app.config['UPLOAD_FOLDER'], "user_avatars"), filename)
 
 
 @app.errorhandler(404)

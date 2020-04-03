@@ -1,7 +1,14 @@
+import re
 import sqlalchemy as sql
+from flask import url_for
 from sqlalchemy.orm import Session
+from flask_wtf.file import FileStorage
+from werkzeug.utils import secure_filename
 
 from models.user_model import User
+from models.topic_model import Topic
+from models.category_model import Category
+from models.post_model import Post
 
 
 class DataBaseWorker:
@@ -31,3 +38,16 @@ class DataBaseWorker:
                 return "Неверный логин или пароль.",
         else:
             return "Неверный логин или пароль.",
+
+    @staticmethod
+    def generate_file_name(text: str):
+        if len(text) > 20:
+            text = text[:20]
+        li = re.findall(r"[(A-Za-zА-Яа-я0-9-_#)]", text)
+        return "".join(li)
+
+    @staticmethod
+    def add_category(session: Session, category: Category):
+        session.add(category)
+        session.commit()
+        return "ok"
