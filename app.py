@@ -6,6 +6,8 @@ from flask_login import login_required, logout_user
 from controllers.index_controller import IndexController
 from controllers.register_controller import RegisterController
 from controllers.login_controller import LoginController
+from controllers.information_controller import InformationController
+from controllers.error404_controller import Error404Controller
 
 from models.user_model import User
 
@@ -54,9 +56,16 @@ def logout():
 @app.route("/information")
 @login_required
 def information():
-    pass
+    controller = InformationController()
+    return controller.view()
+
+
+@app.errorhandler(404)
+def error404(e):
+    controller = Error404Controller()
+    return controller.view()
 
 
 if __name__ == '__main__':
     dbs.global_init("db/database.sqlite")
-    app.run(host="127.0.0.1", port=5000)
+    app.run(host="127.0.0.1", port=80)

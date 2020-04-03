@@ -1,4 +1,4 @@
-*{
+*:not(h1):not(h2):not(h3){
     font-family: "Verdana", "Droid Serif", "DejaVu Serif", "STIX", serif;
     font-size: 16px;
 }
