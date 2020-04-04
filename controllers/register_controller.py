@@ -27,7 +27,7 @@ class RegisterController(Controller):
             user.set_password(self.form.password.data)
             status = DataBaseWorker.add_user(session, user)
             if status == "ok":
-                return redirect("/index")
+                return redirect("/login")
             else:
                 return super(RegisterController, self).view(form=self.form, error=status)
 

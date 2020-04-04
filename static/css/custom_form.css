@@ -5,7 +5,7 @@
     margin-top: 10px;
 }
 
-.uni-form label{
+.uni-form label:not(.disable-block){
     display: block;
     margin-bottom: 5px;
 }
@@ -18,7 +18,7 @@ input[type=text],input[type=password],textarea{
     width: 94%;
 }
 
-input[type=submit]{
+input[type=submit], .submit-btn{
     display: block;
     width: 150px;
     margin: 30px auto 0 auto;
@@ -26,7 +26,7 @@ input[type=submit]{
     color: white;
     border-color: transparent;
 }
-input[type=submit]:hover{
+input[type=submit]:hover, .submit-btn:hover{
     background: white;
     color: dimgray;
     border-color: black;

@@ -5,10 +5,12 @@
     padding: 15px;
     display: flex;
     width: 100%;
+    margin-bottom: 15px;
+    box-shadow: gray 0 1px 7px;
 }
 
 .category:hover{
-    background: ghostwhite;
+    background: azure;
 }
 
 .category-icon{
@@ -60,4 +62,22 @@
     font-size: 15px;
     margin-top: 15px;
     color: gray;
+}
+
+.category_new-btn{
+    transition: color, background-color, .2s ease;
+    font-size: 20px;
+    margin-bottom: 20px;
+    margin-right: 10px;
+    padding: 5px 45px;
+    border: 1px solid gray;
+    display: inline-block;
+    text-decoration: none;
+    background: crimson;
+    color: white;
+}
+.category_new-btn:hover{
+    transition: color, background-color, .2s ease;
+    background: aliceblue;
+    color: black;
 }

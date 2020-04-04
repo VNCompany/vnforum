@@ -1,3 +1,9 @@
-.fa-c-sharp{
-    background-image: url("/static/img/category_icons/sharp.png");
+.fa-default{
+    background-image: url("/static/img/category_icons/default.png");
+}
+.fa-python{
+    background-image: url("/static/img/category_icons/python.png");
+}
+.fa-csharp{
+    background-image: url("/static/img/category_icons/csharp.png");
 }

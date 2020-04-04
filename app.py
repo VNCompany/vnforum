@@ -1,5 +1,5 @@
 import os
-from flask import Flask, redirect, send_from_directory
+from flask import Flask, redirect, send_from_directory, request
 import db_session as dbs
 import flask_login as fl
 from flask_login import login_required, logout_user
@@ -10,6 +10,8 @@ from controllers.login_controller import LoginController
 from controllers.information_controller import InformationController
 from controllers.category_add_controller import CategoryAddController
 from controllers.error404_controller import Error404Controller
+from controllers.perm_error_controller import PermErrorController
+from controllers.topic_add_controller import TopicAddController
 
 from models.user_model import User
 
@@ -68,15 +70,35 @@ def information():
     return controller.view()
 
 
-@app.route("/add", methods=['GET', 'POST'])
+@app.route("/admin/category_add", methods=['GET', 'POST'])
 def category_add():
+    if not fl.current_user.is_authenticated or not fl.current_user.is_admin():
+        return perm_error()
     controller = CategoryAddController()
     return controller.view(dbs.create_session())
+
+
+@app.route("/topic_add", methods=['GET', 'POST'])
+def topic_add():
+    if not fl.current_user.is_authenticated:
+        return perm_error(error="Чтобы добавить тему, вы должны быть авторизованы.")
+    if fl.current_user.is_banned():
+        return perm_error(error="Ваш аккаунт заблокирован.")
+    controller = TopicAddController()
+    if "category" in request.args.keys():
+        return controller.view(dbs.create_session(), category=request.args['category'])
+    else:
+        return controller.view(dbs.create_session())
 
 
 @app.route("/uploads/profiles/<filename>")
 def get_profile_uploads(filename):
     return send_from_directory(os.path.join(app.config['UPLOAD_FOLDER'], "user_avatars"), filename)
+
+
+def perm_error(error=""):
+    controller = PermErrorController()
+    return controller.view(error=error)
 
 
 @app.errorhandler(404)

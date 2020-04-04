@@ -7,6 +7,7 @@
     {% if css is defined %}
         {{ css | safe }}
     {% endif %}
+    {% block head_connections %}{% endblock %}
     <title>{{ title }}</title>
 </head>
 <body>

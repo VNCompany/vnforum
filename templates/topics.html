@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+
+{% block auth %}
+    <a href="/login" class="header-link">Вход</a>
+    <a href="/register" class="header-link">Регистрация</a>
+{% endblock %}
+
+{% block content %}
+    <h2>{{ cat.title }}:</h2>
+    {% if current_user.is_authenticated and current_user.is_admin() %}
+        <a class="flat-button category_new-btn" href="/admin/topic_add?category={{ cat.id }}">Новая тема</a>
+    {% endif %}
+
+    {% for topic in topics %}
+        <div class="topic">
+            <div class="topic-icon">
+                <img src="uploads/profiles/{{ topic.user.avatar }}" width="55" height="55" alt="{{ topic.user.nickname }}">
+            </div>
+            <div class="topic-desc">
+                <a href="topic/{{ topic.id }}" class="topic-link">{{ topic.title }}</a>
+                <p>
+                    Автор: {{ topic.user.nickname }}
+                </p>
+            </div>
+            <div class="category-counter">
+                <p>Сообщения:</p>
+                <p>{{ cat.posts | length }}</p>
+            </div>
+        </div>
+    {% endfor %}
+{% endblock %}

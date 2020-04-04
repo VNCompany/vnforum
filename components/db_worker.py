@@ -51,3 +51,11 @@ class DataBaseWorker:
         session.add(category)
         session.commit()
         return "ok"
+
+    @staticmethod
+    def add_topic(session: Session, topic: Topic, post: Post):
+        session.add(topic)
+        session.commit()
+        post.topic_id = topic.id
+        session.add(post)
+        session.commit()
