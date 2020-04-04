@@ -1,0 +1,84 @@
+.topic{
+    border: 1px solid lightgray;
+    border-bottom: none;
+    display: flex;
+    padding: 5px;
+    background: white;
+}
+.topic:hover{
+    background: aliceblue;
+}
+.topic_new-btn{
+    transition: color, background-color, .2s ease;
+    display: inline-block;
+    margin-bottom: 20px;
+    background: crimson;
+    text-decoration: none;
+    color: white;
+    padding: 5px 15px;
+}
+.topic_new-btn:hover{
+    transition: color, background-color, .2s ease;
+    background: aliceblue;
+    color: black;
+}
+.topic:last-child{
+    border-bottom: 1px solid lightgray;
+    border-bottom-left-radius: 8px;
+    border-bottom-right-radius: 8px;
+}
+.topic:first-child{
+    border-bottom: 1px solid lightgray;
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+}
+.topic-icon img{
+    border-radius: 50%;
+}
+
+.topic p{
+    margin: 5px;
+}
+
+.topic-icon{
+    margin-top: 3px;
+    flex-basis: 55px;
+}
+.topic-first-message, .topic-last-message, .topic-counter{
+    flex: 1;
+}
+.topic-desc{
+    word-break: break-all;
+    word-wrap: break-word;
+    flex: 4;
+    padding-left: 10px;
+}
+
+.topic-link{
+    display: block;
+    margin: 5px 0 5px 5px;
+}
+.topic-first-message p, .topic-last-message p, .topic-counter p{
+    text-align: center;
+}
+.topic-first-message p:first-child, .topic-last-message p:first-child, .topic-counter p:first-child{
+    font-size: 15px;
+    color: gray;
+}
+.admin-name{
+    font-weight: bold;
+}
+.a-prefix{
+    display: inline-block;
+    font-size: 16px;
+    background: red;
+    color: white;
+    border-radius: 5px;
+    margin-right: 4px;
+    padding: 2px 4px;
+    font-family: serif;
+}
+.banned-user{
+    color: gray;
+    text-decoration: line-through;
+}

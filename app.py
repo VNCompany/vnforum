@@ -12,8 +12,12 @@ from controllers.category_add_controller import CategoryAddController
 from controllers.error404_controller import Error404Controller
 from controllers.perm_error_controller import PermErrorController
 from controllers.topic_add_controller import TopicAddController
+from controllers.topics_controller import TopicsController
 
 from models.user_model import User
+from models.category_model import Category
+from models.topic_model import Topic
+from models.post_model import Post
 
 UPLOAD_FOLDER = './uploads'
 
@@ -89,6 +93,16 @@ def topic_add():
         return controller.view(dbs.create_session(), category=request.args['category'])
     else:
         return controller.view(dbs.create_session())
+
+
+@app.route("/category/<int:cat_id>")
+def get_topics(cat_id: int):
+    session = dbs.create_session()
+    cat = session.query(Category).get(cat_id)
+    topics = session.query(Topic).filter(Topic.category_id == cat.id).order_by(Topic.date.desc())
+    last_post = session.query(Post).order_by(Post.id.desc()).first()
+    controller = TopicsController(cat)
+    return controller.view(topics=topics, last_post=last_post)
 
 
 @app.route("/uploads/profiles/<filename>")

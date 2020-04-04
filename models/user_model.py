@@ -47,3 +47,12 @@ class User(SqlAlchemyBase, UserMixin):
 
     def check_password(self, password):
         return check_password_hash(self.password, password)
+
+    def get_name(self):
+        if self.is_admin():
+            return f'<span class="admin-name" title="Администратор форума"><span class="a-prefix">Admin</span>' \
+                   f'<span>{self.nickname}</span></span>'
+        elif self.is_banned():
+            return f'<span class="banned-user" title="Заблокирован">{self.nickname}</span>'
+        else:
+            return f'<span>{self.nickname}</span>'

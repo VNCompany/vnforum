@@ -32,9 +32,10 @@ class TopicAddController(Controller):
 
         if self.form.validate_on_submit():
             content = short_code_parser(self.form.content.data)
+            sel_cat = int(self.form.category.data.split("-")[1])
             topic = Topic(
                 user_id=current_user.id,
-                category_id=int(self.form.category.data.split("-")[1]),
+                category_id=sel_cat,
                 title=self.form.title.data,
                 tags=self.form.tags.data,
                 is_writeable=self.form.is_writeable.data
@@ -44,6 +45,6 @@ class TopicAddController(Controller):
                 content=content,
             )
             DataBaseWorker.add_topic(session, topic, post)
-            return redirect("/")
+            return redirect("/category/" + str(sel_cat))
         else:
             return super(TopicAddController, self).view(form=self.form)

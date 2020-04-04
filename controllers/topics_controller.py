@@ -11,3 +11,4 @@ class TopicsController(Controller):
         self.__title__ = self.cat.title
         super(TopicsController, self).__init__()
         self.css("topics.css")
+        self.view_includes["cat"] = self.cat

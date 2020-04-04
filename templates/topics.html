@@ -7,25 +7,43 @@
 
 {% block content %}
     <h2>{{ cat.title }}:</h2>
-    {% if current_user.is_authenticated and current_user.is_admin() %}
-        <a class="flat-button category_new-btn" href="/admin/topic_add?category={{ cat.id }}">Новая тема</a>
+    {% if current_user.is_authenticated and not current_user.is_banned() %}
+        <a class="flat-button topic_new-btn" href="/topic_add?category={{ cat.id }}">Новая тема</a>
     {% endif %}
 
-    {% for topic in topics %}
+    <div class="li-topics">
+        {% for topic in topics %}
         <div class="topic">
             <div class="topic-icon">
-                <img src="uploads/profiles/{{ topic.user.avatar }}" width="55" height="55" alt="{{ topic.user.nickname }}">
+                <img src="/uploads/profiles/{{ topic.user.avatar }}" width="55" height="55" alt="{{ topic.user.nickname }}">
             </div>
             <div class="topic-desc">
-                <a href="topic/{{ topic.id }}" class="topic-link">{{ topic.title }}</a>
+                <div class="topic-link">
+                    <a href="/topic/{{ topic.id }}">
+                        {% if topic.title|length > 96 %}
+                             {{ topic.title[:20] }}
+                        {% else %}
+                            {{ topic.title }}
+                        {% endif %}
+                    </a>
+                </div>
                 <p>
-                    Автор: {{ topic.user.nickname }}
+                    Автор: {{ topic.user.get_name() | safe }}
                 </p>
             </div>
-            <div class="category-counter">
-                <p>Сообщения:</p>
+            <div class="topic-counter">
+                <p>Сообщения</p>
                 <p>{{ cat.posts | length }}</p>
+            </div>
+            <div class="topic-first-message">
+                <p>Дата создания</p>
+                <p>{{ topic.date.strftime("%d.%m.%Y %H:%M") }}</p>
+            </div>
+            <div class="topic-last-message">
+                <p>Последнее</p>
+                <p>{{ last_post.last_date.strftime("%d.%m.%Y %H:%M") }}</p>
             </div>
         </div>
     {% endfor %}
+    </div>
 {% endblock %}
