@@ -1,8 +1,9 @@
 import os
-from flask import Flask, redirect, send_from_directory, request
+from flask import Flask, redirect, send_from_directory, request, abort
 import db_session as dbs
 import flask_login as fl
 from flask_login import login_required, logout_user
+from components.db_worker import DataBaseWorker
 
 from controllers.index_controller import IndexController
 from controllers.register_controller import RegisterController
@@ -26,6 +27,8 @@ app = Flask(__name__)
 app.config['SECRET_KEY'] = "yandexlyceum_secret_key"
 app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+
+PAGE_COUNT = 20
 
 login_manager = fl.LoginManager()
 login_manager.init_app(app)
@@ -95,14 +98,17 @@ def topic_add():
         return controller.view(dbs.create_session())
 
 
-@app.route("/category/<int:cat_id>")
+@app.route("/category/<int:cat_id>", methods=['GET'])
 def get_topics(cat_id: int):
     session = dbs.create_session()
     cat = session.query(Category).get(cat_id)
-    topics = session.query(Topic).filter(Topic.category_id == cat.id).order_by(Topic.date.desc())
-    last_post = session.query(Post).order_by(Post.id.desc()).first()
+    if not cat:
+        abort(404)
     controller = TopicsController(cat)
-    return controller.view(topics=topics, last_post=last_post)
+    page = 1
+    if "page" in request.args.keys():
+        page = int(request.args['page'])
+    return controller.view(session, page)
 
 
 @app.route("/uploads/profiles/<filename>")

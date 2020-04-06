@@ -29,6 +29,9 @@ class TopicAddController(Controller):
 
         if kwargs.get('category', None):
             self.form.category.data = "cat-" + str(kwargs['category'])
+            self.form.category.render_kw = {
+                "disabled": True
+            }
 
         if self.form.validate_on_submit():
             content = short_code_parser(self.form.content.data)

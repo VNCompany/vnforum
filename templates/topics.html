@@ -11,39 +11,49 @@
         <a class="flat-button topic_new-btn" href="/topic_add?category={{ cat.id }}">Новая тема</a>
     {% endif %}
 
-    <div class="li-topics">
-        {% for topic in topics %}
-        <div class="topic">
-            <div class="topic-icon">
-                <img src="/uploads/profiles/{{ topic.user.avatar }}" width="55" height="55" alt="{{ topic.user.nickname }}">
-            </div>
-            <div class="topic-desc">
-                <div class="topic-link">
-                    <a href="/topic/{{ topic.id }}">
-                        {% if topic.title|length > 96 %}
-                             {{ topic.title[:20] }}
-                        {% else %}
-                            {{ topic.title }}
-                        {% endif %}
-                    </a>
+    {% if topics|length > 0 %}
+        <div class="li-topics">
+            {% for topic in topics %}
+                <div class="topic">
+                    <div class="topic-icon">
+                        <img src="/uploads/profiles/{{ topic.user.avatar }}" width="55" height="55"
+                             alt="{{ topic.user.nickname }}">
+                    </div>
+                    <div class="topic-desc">
+                        <div class="topic-link">
+                            <a href="/topic/{{ topic.id }}">
+                                {% if topic.title|length > 96 %}
+                                    {{ topic.title[:20] }}
+                                {% else %}
+                                    {{ topic.title }}
+                                {% endif %}
+                            </a>
+                        </div>
+                        <p>
+                            Автор: {{ topic.user.get_name() | safe }}
+                        </p>
+                    </div>
+                    <div class="topic-counter">
+                        <p>Сообщения</p>
+                        <p>{{ topic.posts|length }}</p>
+                    </div>
+                    <div class="topic-first-message">
+                        <p>Дата создания</p>
+                        <p>{{ topic.date.strftime("%d.%m.%Y %H:%M") }}</p>
+                    </div>
+                    <div class="topic-last-message">
+                        <p>Последнее</p>
+                        <p>
+                            {% if topic.posts|length > 0 %}
+                                {{ topic.get_last_post().last_date.strftime("%d.%m.%Y %H:%M") }}
+                            {% endif %}
+                        </p>
+                    </div>
                 </div>
-                <p>
-                    Автор: {{ topic.user.get_name() | safe }}
-                </p>
-            </div>
-            <div class="topic-counter">
-                <p>Сообщения</p>
-                <p>{{ cat.posts | length }}</p>
-            </div>
-            <div class="topic-first-message">
-                <p>Дата создания</p>
-                <p>{{ topic.date.strftime("%d.%m.%Y %H:%M") }}</p>
-            </div>
-            <div class="topic-last-message">
-                <p>Последнее</p>
-                <p>{{ last_post.last_date.strftime("%d.%m.%Y %H:%M") }}</p>
-            </div>
+            {% endfor %}
         </div>
-    {% endfor %}
-    </div>
+        {{ pagination_string | safe }}
+    {% else %}
+        <h1>Записей нет</h1>
+    {% endif %}
 {% endblock %}

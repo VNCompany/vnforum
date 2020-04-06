@@ -34,3 +34,9 @@ class Topic(SqlAlchemyBase):
             return True
         else:
             return False
+
+    def get_last_post(self):
+        if len(self.posts) == 0:
+            return None
+        else:
+            return sorted(self.posts, key=lambda k: k.id, reverse=True)[0]

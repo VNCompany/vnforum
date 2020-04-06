@@ -1,3 +1,7 @@
+TOPICS_PAGE_LENGTH = 2
+POSTS_PAGE_LENGTH = 20
+
+
 def make_list(max_page: int):
     if max_page <= 1:
         return [[1]]
@@ -35,9 +39,26 @@ def html_pagination(max_page, pos: int, link: str):
     result = '<div class="pagination"><ul>'
     for n in pagination:
         selected = 'class="p-selected"' if n == pos else ""
-        l = f'href="{link.replace("{id}", str(n))}"' if n != -1 or n == pos else ""
+        href = f'href="{link.replace("%id", str(n))}"' if n != pos and n != -1 else ""
         text = str(n) if n != -1 else "..."
 
-        result += f"<li {selected}><a {l}>{text}</a></li>"
+        result += f"<li {selected}><a {href}>{text}</a></li>"
     result += "</ul></div>"
     return result
+
+
+def get_page(li: list, page: int, length: int):
+    lil = len(li)
+    page_length = lil // length
+    if lil % length != 0:
+        page_length += 1
+
+    page -= 1
+    if page < 0 or page >= page_length:
+        return None
+
+    pos = page * length
+    if pos + length >= lil:
+        return li[pos:], page_length
+    else:
+        return li[pos:length + pos], page_length

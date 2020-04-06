@@ -5,10 +5,13 @@ from sqlalchemy.orm import Session
 from flask_wtf.file import FileStorage
 from werkzeug.utils import secure_filename
 
+from .pagination import html_pagination, get_page, POSTS_PAGE_LENGTH, TOPICS_PAGE_LENGTH
+
 from models.user_model import User
 from models.topic_model import Topic
 from models.category_model import Category
 from models.post_model import Post
+
 
 
 class DataBaseWorker:
@@ -59,3 +62,14 @@ class DataBaseWorker:
         post.topic_id = topic.id
         session.add(post)
         session.commit()
+
+    @staticmethod
+    def get_topics(session: Session, cat_id: int, page: int):
+        ids = session.query(Topic.id).filter(Topic.category_id == cat_id).order_by(Topic.id.desc()).all()
+        ids = [i[0] for i in ids]
+        result = get_page(ids, page, TOPICS_PAGE_LENGTH)
+        if result is None:
+            return None
+        else:
+            items = session.query(Topic).filter(Topic.id.in_(result[0])).all()
+            return items, result[1]

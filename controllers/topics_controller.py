@@ -1,5 +1,7 @@
 from .__imports import *
 
+from sqlalchemy.orm import Session
+
 from models.category_model import Category
 
 
@@ -12,3 +14,12 @@ class TopicsController(Controller):
         super(TopicsController, self).__init__()
         self.css("topics.css")
         self.view_includes["cat"] = self.cat
+
+    def view(self, session: Session, page: int, **kwargs):
+        opage = DataBaseWorker.get_topics(session, self.cat.id, page)
+        if opage is None:
+            abort(404)
+        else:
+            self.pagination(opage[1], page, "?page=%id")
+            self.view_includes['topics'] = opage[0]
+            return super(TopicsController, self).view(**kwargs)
