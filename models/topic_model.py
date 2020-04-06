@@ -40,3 +40,10 @@ class Topic(SqlAlchemyBase):
             return None
         else:
             return sorted(self.posts, key=lambda k: k.id, reverse=True)[0]
+
+    def short_title(self, length: int = 40, dots=True):
+        lt = len(self.title)
+        if lt <= length:
+            return lt
+        else:
+            return lt[:length] + ("..." if dots else "")

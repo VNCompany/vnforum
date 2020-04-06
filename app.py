@@ -14,6 +14,7 @@ from controllers.error404_controller import Error404Controller
 from controllers.perm_error_controller import PermErrorController
 from controllers.topic_add_controller import TopicAddController
 from controllers.topics_controller import TopicsController
+from controllers.topic_controller import TopicController
 
 from models.user_model import User
 from models.category_model import Category
@@ -109,6 +110,12 @@ def get_topics(cat_id: int):
     if "page" in request.args.keys():
         page = int(request.args['page'])
     return controller.view(session, page)
+
+
+@app.route("/topic/<int:topic_id>")
+def get_posts(topic_id: int):
+    controller = TopicController()
+    return controller.view()
 
 
 @app.route("/uploads/profiles/<filename>")
