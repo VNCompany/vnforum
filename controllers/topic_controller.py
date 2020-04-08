@@ -12,6 +12,8 @@ class TopicController(Controller):
     def __init__(self):
         super(TopicController, self).__init__()
         self.css("topic.css")
+        self.javascript("topic.js")
+        self.javascript("topic.js")
         # topic = session.query(Topic).get(topic_id)
         # if not topic:
         #     abort(404)

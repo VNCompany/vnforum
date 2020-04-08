@@ -1,9 +1,6 @@
 import re
-import sqlalchemy as sql
-from flask import url_for
 from sqlalchemy.orm import Session
-from flask_wtf.file import FileStorage
-from werkzeug.utils import secure_filename
+from flask_login import current_user
 
 from .pagination import html_pagination, get_page, POSTS_PAGE_LENGTH, TOPICS_PAGE_LENGTH
 
@@ -73,3 +70,27 @@ class DataBaseWorker:
         else:
             items = session.query(Topic).filter(Topic.id.in_(result[0])).all()
             return items, result[1]
+
+    @staticmethod
+    def vote_user(session: Session, user_id: int, count: int):
+        if not current_user.is_authenticated:
+            return "error"
+        user = session.query(User).get(user_id)
+        if user:
+            user.vote(current_user.id, count)
+            session.commit()
+            return user.rating
+        else:
+            return "error"
+
+    @staticmethod
+    def vote_post(session: Session, post_id: int, count: int):
+        if not current_user.is_authenticated:
+            return "error"
+        post = session.query(Post).get(post_id)
+        if post:
+            post.vote(current_user.id, count)
+            session.commit()
+            return post.rating
+        else:
+            return "error"

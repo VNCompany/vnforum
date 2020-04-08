@@ -86,16 +86,6 @@
     background-repeat: no-repeat;
 }
 
-.fa-reg{
-    background-image: url("/static/img/icons/reg.png");
-}
-.fa-posts{
-    background-image: url("/static/img/icons/posts.png");
-}
-.fa-rating{
-    background-image: url("/static/img/icons/rating.png");
-}
-
 .p-body-header a{
     text-decoration: none;
     color: blue;
@@ -116,5 +106,39 @@
 }
 
 .fa-b-up{
-    background-image: url("");
+    background-image: url("/static/img/icons/green_up.png");
+}
+.fa-b-down{
+    background-image: url("/static/img/icons/red_down.png");
+}
+.fa-reg{
+    background-image: url("/static/img/icons/reg.png");
+}
+.fa-posts{
+    background-image: url("/static/img/icons/posts.png");
+}
+.fa-rating{
+    background-image: url("/static/img/icons/rating.png");
+}
+
+.prop-i{
+    display: inline-block;
+    width: 22px; height: 22px;
+    background-repeat: no-repeat;
+    background-size: 22px 22px;
+}
+.prop-v{
+    vertical-align: super;
+}
+
+.btn-vote{
+    margin: 0;
+    padding: 0;
+    background-color: transparent;
+    border: none;
+    display: inline;
+    vertical-align: super;
+}
+.btn-vote-user{
+    vertical-align: inherit;
 }

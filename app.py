@@ -1,4 +1,5 @@
 import os
+import json
 from flask import Flask, redirect, send_from_directory, request, abort
 import db_session as dbs
 import flask_login as fl
@@ -121,6 +122,44 @@ def get_posts(topic_id: int):
 @app.route("/uploads/profiles/<filename>")
 def get_profile_uploads(filename):
     return send_from_directory(os.path.join(app.config['UPLOAD_FOLDER'], "user_avatars"), filename)
+
+
+@app.route("/ajax/vote", methods=['POST'])
+def vote():
+    if not fl.current_user.is_authenticated:
+        return json.dumps({
+            "status": "error",
+            "message": "Чтобы голосовать, вы должны быть авторизованы"
+        })
+    if "value" not in request.form.keys() or \
+            "uid" not in request.form.keys() or \
+            "type" not in request.form.keys():
+        return json.dumps({
+            "status": "error",
+            "message": "Неверный запрос"
+        })
+    try:
+        uid = int(request.form['uid'])
+    except Exception:
+        return json.dumps({
+            "status": "error",
+            "message": "Неверный запрос"
+        })
+    value = 1 if request.form['value'] == "plus" else -1
+    if request.form['type'] == "vote_user":
+        status = DataBaseWorker.vote_user(dbs.create_session(), uid, value)
+    else:
+        status = DataBaseWorker.vote_post(dbs.create_session(), uid, value)
+    if status != "error":
+        return json.dumps({
+            "status": "ok",
+            "value": status
+        })
+    else:
+        return json.dumps({
+            "status": "error",
+            "message": "Не удалось проголосовать"
+        })
 
 
 def perm_error(error=""):

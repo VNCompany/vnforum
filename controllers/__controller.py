@@ -36,7 +36,7 @@ class Controller:
 
     def javascript(self, *names):
         for name in names:
-            self.view_includes["js"] += f'<script src="{self.static("js/" + name)}"></script>\n'
+            self.view_includes["js"] += f'<script type="text/javascript" src="{self.static("js/" + name)}"></script>\n'
 
     def pagination(self, max_page, pos: int, link: str):
         self.view_includes["pagination_string"] = html_pagination(max_page, pos, link)

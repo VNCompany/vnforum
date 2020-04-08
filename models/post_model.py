@@ -16,6 +16,9 @@ class Post(SqlAlchemyBase):
     date = sql.Column(sql.DateTime, default=datetime.datetime.now)
     last_date = sql.Column(sql.DateTime, default=datetime.datetime.now)
 
+    rating = sql.Column(sql.Integer, default=0)
+    votes = sql.Column(sql.String, default="")
+
     user = orm.relation('User')
     topic = orm.relation('Topic')
 
@@ -26,3 +29,9 @@ class Post(SqlAlchemyBase):
 
     def can_delete(self, user: User):
         return user.is_admin()
+
+    def vote(self, user_id: int, count: int):
+        str_id = str(user_id)
+        if str_id not in self.votes.split(",") and user_id != self.user.id:
+            self.rating += count
+            self.votes += ("" if self.votes == "" else ",") + str_id
