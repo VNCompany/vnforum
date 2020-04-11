@@ -30,8 +30,17 @@ class Topic(SqlAlchemyBase):
             return False
         if self.is_writeable and not self.is_closed:
             return True
-        elif not self.is_writeable and self.user_id == user.id and not self.is_closed:
+        elif not self.is_writeable and (self.user_id == user.id or user.is_admin()) and not self.is_closed:
             return True
+        else:
+            return False
+
+    def can_close(self, user: User):
+        if not user.is_banned() and not self.is_closed:
+            if user.is_admin() or self.user_id == user.id:
+                return True
+            else:
+                return False
         else:
             return False
 
@@ -44,6 +53,6 @@ class Topic(SqlAlchemyBase):
     def short_title(self, length: int = 40, dots=True):
         lt = len(self.title)
         if lt <= length:
-            return lt
+            return self.title
         else:
-            return lt[:length] + ("..." if dots else "")
+            return self.title[:length] + ("..." if dots else "")

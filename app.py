@@ -16,6 +16,7 @@ from controllers.perm_error_controller import PermErrorController
 from controllers.topic_add_controller import TopicAddController
 from controllers.topics_controller import TopicsController
 from controllers.topic_controller import TopicController
+from controllers.post_editor_controller import PostEditorController
 
 from models.user_model import User
 from models.category_model import Category
@@ -115,8 +116,28 @@ def get_topics(cat_id: int):
 
 @app.route("/topic/<int:topic_id>")
 def get_posts(topic_id: int):
-    controller = TopicController()
-    return controller.view()
+    controller = TopicController(dbs.create_session(), topic_id)
+    page = 1
+    if "page" in request.args.keys():
+        page = int(request.args['page'])
+    return controller.view(page)
+
+
+@app.route("/topic/<int:topic_id>/close")
+@fl.login_required
+def close_topic(topic_id: int):
+    session = dbs.create_session()
+    topic = session.query(Topic).get(topic_id)
+    if topic:
+        if topic.can_close(fl.current_user):
+            topic.is_closed = True
+            session.add(topic)
+            session.commit()
+            return redirect("/topic/" + str(topic_id))
+        else:
+            return PermErrorController().view(error="Не удалось закрыть тему")
+    else:
+        abort(404)
 
 
 @app.route("/uploads/profiles/<filename>")
@@ -160,6 +181,25 @@ def vote():
             "status": "error",
             "message": "Не удалось проголосовать"
         })
+
+
+@app.route("/ajax/topic/<int:topic_id>/add_post", methods=['POST'])
+def post_add(topic_id: int):
+    err = "Ошибка. Не удалось отправить сообщение."
+    if not fl.current_user.is_authenticated:
+        return err
+    if not request.form.get("content", None) or len(str(request.form['content']).replace(" ", "")) == 0:
+        return err
+    if DataBaseWorker.add_post(dbs.create_session(), fl.current_user, topic_id, request.form['content']):
+        return "ok"
+    else:
+        return err
+
+
+@app.route("/post/<int:post_id>/edit", methods=['GET', 'POST'])
+def post_edit(post_id: int):
+    controller = PostEditorController(dbs.create_session(), post_id)
+    return controller.view()
 
 
 def perm_error(error=""):

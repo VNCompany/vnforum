@@ -14,13 +14,14 @@
     box-shadow: gray 1px 1px 1px;
     margin-bottom: 15px;
     background: white;
-    min-height: 300px;
+    min-height: 350px;
 }
 .p-info{
     flex: 1;
     background: aliceblue;
     border-left: 1px solid gray;
     border-radius: 4px;
+    padding-bottom: 15px;
 }
 .p-body{
     flex: 7;
@@ -47,6 +48,8 @@
 }
 .p-body-content{
     flex-basis: 100%;
+    padding: 15px;
+    word-break: break-word;
 }
 .last-edit{
     font-style: italic;
@@ -141,4 +144,68 @@
 }
 .btn-vote-user{
     vertical-align: inherit;
+}
+
+pre.rainbow-show{
+    border: 1px solid gray;
+    border-radius: 4px;
+    padding: 5px;
+}
+pre.rainbow-show span, pre.rainbow-show code{
+    font-size: 16px;
+    font-family: 'Monaco', 'Menlo', courier, monospace;
+}
+
+pre.rainbow-show{
+    max-height: 300px;
+    width: 1000px;
+    overflow: scroll;
+}
+
+.post-image{
+    max-height: 350px;
+    padding: 15px 10px 15px 0;
+}
+
+blockquote{
+    border-left: 3px solid darkblue;
+    margin-left: 10px;
+    padding: 10px 20px;
+}
+
+.post-add{
+    border: 1px solid gray;
+    border-radius: 4px;
+    box-shadow: gray 1px 1px 1px;
+    margin-bottom: 50px;
+    background: white;
+}
+.post_add-btn{
+    transition: color, background-color, .2s ease;
+    display: inline-block;
+    margin-bottom: 5px;
+    margin-right: 5px;
+    background: crimson;
+    text-decoration: none;
+    color: white;
+    padding: 5px 15px;
+    width: 200px;
+}
+.post_add-btn:hover{
+    transition: color, background-color, .2s ease;
+    background: aliceblue;
+    color: black;
+    cursor: pointer;
+}
+.p-a-b-block{
+    display: flex;
+    flex-direction: row-reverse;
+}
+
+.c-footer{
+    display: flex;
+    justify-content: space-between;
+}
+.c-footer>div:last-child{
+    padding-top: 10px;
 }

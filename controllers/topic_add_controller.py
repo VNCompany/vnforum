@@ -1,11 +1,9 @@
 from .__imports import *
 from forms.topic_add_form import TopicAddForm
-from components.sc_man import short_code_parser
 
 from sqlalchemy.orm import Session
 from models.topic_model import Topic
 from models.post_model import Post
-from models.user_model import User
 from models.category_model import Category
 
 
@@ -16,7 +14,8 @@ class TopicAddController(Controller):
     def __init__(self):
         super(TopicAddController, self).__init__()
         self.css("custom_form.css")
-        self.javascript("topic_add.js")
+        self.css("vneditor/vneditor.css")
+        self.javascript("vneditor/vneditor.js")
         self.form = TopicAddForm()
 
     def view(self, session: Session, **kwargs):
@@ -34,7 +33,7 @@ class TopicAddController(Controller):
             }
 
         if self.form.validate_on_submit():
-            content = short_code_parser(self.form.content.data)
+            content = self.form.content.data
             sel_cat = int(self.form.category.data.split("-")[1])
             topic = Topic(
                 user_id=current_user.id,
@@ -47,7 +46,10 @@ class TopicAddController(Controller):
                 user_id=current_user.id,
                 content=content,
             )
-            DataBaseWorker.add_topic(session, topic, post)
-            return redirect("/category/" + str(sel_cat))
+            status = DataBaseWorker.add_topic(session, topic, post)
+            if status == "ok":
+                return redirect("/category/" + str(sel_cat))
+            else:
+                return super(TopicAddController, self).view(form=self.form, error=status)
         else:
             return super(TopicAddController, self).view(form=self.form)

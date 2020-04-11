@@ -1,60 +1,136 @@
 {% extends "base.html" %}
 
+{% block auth %}
+    <a href="/login" class="header-link">Вход</a>
+    <a href="/register" class="header-link">Регистрация</a>
+{% endblock %}
+
 {% block content %}
-    <p class="navigation"><a href="#">Python</a> > <span
-            class="nav-topic">Как сделать шипучку в домашних условиях</span></p>
+    <p class="navigation"><a href="/category/{{ topic.category.id }}">{{ topic.category.title }}</a> > <span
+            class="nav-topic">{{ topic.short_title() }}</span></p>
     <h2>Обсуждение:</h2>
+    {% if current_user.is_authenticated and topic.can_close(current_user) %}
+        <p>
+            <a href="/topic/{{ topic.id }}/close" class="flat-button post_add-btn" style="width: 113px">Закрыть тему</a>
+        </p>
+    {% endif %}
 
     <div class="posts">
-        <div class="post">
-            <div class="p-info">
-                <div class="p-user-img"><img width="128" height="128" src="/uploads/profiles/default.jpg" alt="victor">
-                </div>
-                <div><a class="p-user-link" href="#">Artem4ik Gamer Pro</a></div>
-                <div><span style="color: red">Заблокирован</span></div>
-                <div class="p-prop">
-                    <span class="prop-i fa-reg"></span>
-                    <span class="prop-v">23.03.2020</span>
-                </div>
+        {% for post in posts %}
+            <div class="post" id="post-{{ loop.index }}">
+                <div class="p-info">
+                    <div class="p-user-img"><img width="128" height="128" src="/uploads/profiles/{{ post.user.avatar }}"
+                                                 alt="{{ post.user.nickname }}">
+                    </div>
+                    <div><a class="p-user-link" href="/user/{{ post.user.id }}">{{ post.user.nickname }}</a></div>
+                    <div>
+                        {% if post.user.is_admin() %}
+                            <span style="color: red">Администратор</span>
+                        {% elif post.user.is_banned() %}
+                            <span style="color: gray; text-decoration: line-through">Заблокирован</span>
+                        {% else %}
+                            <span>Пользователь</span>
+                        {% endif %}
+                    </div>
+                    <div class="p-prop">
+                        <span class="prop-i fa-reg"></span>
+                        <span class="prop-v">{{ post.user.reg_date.strftime("%d.%m.%Y") }}</span>
+                    </div>
 
-                <div class="p-prop">
-                    <span class="prop-i fa-posts"></span>
-                    <span class="prop-v">9999</span>
-                </div>
+                    <div class="p-prop">
+                        <span class="prop-i fa-posts"></span>
+                        <span class="prop-v">{{ post.user.posts | length }}</span>
+                    </div>
 
-                <div class="p-prop">
-                    <span class="prop-i fa-rating"></span>
-                    <span class="prop-v" style="vertical-align: top">
-                        <button id="vu-1" class="btn-vote-user btn-vote prop-i fa-b-up"></button>
-                        <span id="vv-1" class="prop-v">17</span>
-                        <button id="vd-1" class="btn-vote-user btn-vote prop-i fa-b-down"></button>
-                    </span>
+                    <div class="p-prop">
+                        <span class="prop-i fa-rating"></span>
+                        <span class="prop-v" style="vertical-align: top">
+                            {% if current_user.is_authenticated %}
+                                <button id="vu{{ loop.index }}-{{ post.user.id }}"
+                                        class="btn-vote-user btn-vote prop-i fa-b-up"></button>
+                            {% endif %}
+                            <span id="vv{{ loop.index }}-{{ post.user.id }}"
+                                  class="prop-v">{{ post.user.rating }}</span>
+                            {% if current_user.is_authenticated %}
+                                <button id="vd{{ loop.index }}-{{ post.user.id }}"
+                                        class="btn-vote-user btn-vote prop-i fa-b-down"></button>
+                            {% endif %}
+                        </span>
+                    </div>
+                </div>
+                <div class="p-body">
+                    <div class="p-body-header">
+                        <div>{{ post.date.strftime("%d.%m.%Y %H:%M") }}</div>
+                        <div><a href="#post-{{ loop.index }}">#{{ loop.index }}</a></div>
+                    </div>
+                    <div class="p-body-content">
+                        {{ generate_content(post.content) | safe }}
+                    </div>
+                    {% if post.date != post.last_date %}
+                        <div class="last-edit">Последнее
+                            редактирование: {{ post.last_date.strftime("%d.%m.%Y %H:%M") }}</div>
+                    {% endif %}
+                    <div class="c-footer">
+                        <div title="Рейтинг" class="p-rating">
+                            {% if current_user.is_authenticated %}
+                                <button id="pvu-{{ post.id }}" class="btn-vote-post btn-vote prop-i fa-b-up"></button>
+                            {% endif %}
+                            <span id="pr-{{ post.id }}" class="p-rating">{{ post.rating }}</span>
+                            {% if current_user.is_authenticated %}
+                                <button id="pvd-{{ post.id }}" class="btn-vote-post btn-vote prop-i fa-b-down"></button>
+                            {% endif %}
+                        </div>
+                        <div>
+                            {% if current_user.is_authenticated and post.can_change(current_user) and not current_user.is_admin() %}
+                                <a class="flat-button func-btn"
+                                   href="{{ generate_edit_link(post.id, page_number, loop.index) }}">Править</a>
+                            {% elif current_user.is_authenticated and current_user.is_admin() %}
+                                <a class="flat-button func-btn"
+                                   href="{{ generate_edit_link(post.id, page_number, loop.index) }}">Править</a>
+                                <a class="flat-button func-btn"
+                                   onclick="reply_to('{{ post.user.nickname }}')">Ответить</a>
+                            {% elif current_user.is_authenticated and topic.can_post(current_user) %}
+                                <a class="flat-button func-btn"
+                                   onclick="reply_to('{{ post.user.nickname }}')">Ответить</a>
+                            {% endif %}
+                        </div>
+                    </div>
                 </div>
             </div>
-            <div class="p-body">
-                <div class="p-body-header">
-                    <div>28.08.2020 18:10</div>
-                    <div><a href="#">#1</a></div>
+        {% endfor %}
+        {{ pagination_string | safe }}
+        {% if current_user.is_authenticated and topic.can_post(current_user) %}
+            <div class="post-add">
+                <div id="editor-block"></div>
+                <div class="p-a-b-block">
+                    <button class="flat-button post_add-btn">Отправить</button>
                 </div>
-                <div class="p-body-content">
-                    <p>geporigjotijrotihjrot</p>
-                    <p>geporigjotijrotihjrot</p>
-                    <p>geporigjotijrotihjrot</p>
-                    <p>geporigjotijrotihjrot</p>
-                    <p>geporigjotijrotihjrot</p>
-                    <p>geporigjotijrotihjrot</p>
-                    <p>geporigjotijrotihjrot</p>
-                    <p>geporigjotijrotihjrot</p>
-                    <p>geporigjotijrotihjrot</p>
-                    <p>geporigjotijrotihjrot</p>
-                </div>
-                <div class="last-edit">Последнее редактирование: 28.09.2020</div>
-                <div title="Рейтинг" class="p-rating">
-                    <button id="pvu-1" class="btn-vote-post btn-vote prop-i fa-b-up"></button>
-                    <span id="pr-1" class="p-rating">17</span>
-                    <button id="pvd-1" class="btn-vote-post btn-vote prop-i fa-b-down"></button>
-                </div>
+                <span style="display: block" id="d-topic_id" data-tid="{{ topic.id }}"></span>
             </div>
-        </div>
+        {% endif %}
+
+        {% if topic.is_closed %}
+            <h2 style="color: red">Тема закрыта</h2>
+        {% endif %}
     </div>
+{% endblock %}
+
+{% block scripts %}
+    <script type="text/javascript">
+        VNE.init({
+            id: "editor",
+            name: "editor",
+            selector: "#editor-block"
+        });
+        VNE.css({
+            display: "block"
+        });
+
+        function reply_to(to) {
+            VNE.setText("[B]" + to + "[/B],");
+            $("html, body").animate({
+                scrollTop: $("#editor-block").offset().top
+            });
+        }
+    </script>
 {% endblock %}

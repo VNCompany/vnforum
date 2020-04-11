@@ -23,9 +23,9 @@ class Post(SqlAlchemyBase):
     topic = orm.relation('Topic')
 
     def can_change(self, user: User):
-        if user.is_banned():
+        if not self.topic.can_post(user):
             return False
-        user.id == self.user_id or user.is_admin()
+        return user.id == self.user_id or user.is_admin()
 
     def can_delete(self, user: User):
         return user.is_admin()

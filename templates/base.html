@@ -42,5 +42,27 @@
 {% if js is defined %}
     {{ js | safe }}
 {% endif %}
+{% block scripts %}{% endblock %}
+<footer>
+    <div class="footer-body">
+        <div>
+            <h3>О сайте:</h3>
+            <p>Это форум для программистов любой индустрии.</p>
+            <p>Сайт предназначен прежде всего для общения между программистами,</p>
+            <p>получения каких-либо ответов на вопросы. Также, темы форума</p>
+            <p>можно делать только для чтения для того, чтобы использовать её,</p>
+            <p>как небольшой блог.</p>
+        </div>
+        <div>
+            <h3>Контакты:</h3>
+            <p>
+                ВКонтакте: <a href="https://vk.com/mrroller1" target="_blank">Виктор Незнанов</a>
+            </p>
+            <p>
+                Email: <a href="mailto:vneznanow@yandex.ru" target="_blank">vneznanow@yandex.ru</a>
+            </p>
+        </div>
+    </div>
+</footer>
 </body>
 </html>

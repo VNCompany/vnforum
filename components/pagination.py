@@ -1,5 +1,5 @@
-TOPICS_PAGE_LENGTH = 2
-POSTS_PAGE_LENGTH = 20
+TOPICS_PAGE_LENGTH = 20
+POSTS_PAGE_LENGTH = 10
 
 
 def make_list(max_page: int):

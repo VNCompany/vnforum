@@ -1,4 +1,4 @@
-from flask import Flask, redirect, abort
+from flask import Flask, redirect, abort, request
 import db_session
 import flask_login
 from .__controller import Controller

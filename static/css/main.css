@@ -197,3 +197,54 @@ menu>li:first-child{
     color: gray;
     text-decoration: line-through;
 }
+
+.func-btn{
+    text-decoration: none;
+    background: darkcyan;
+    color: white;
+}
+.func-btn:hover{
+    background: transparent;
+    color: black;
+    cursor: pointer;
+}
+
+footer{
+    background: #2f66b9;
+    min-height: 20px;
+}
+
+footer *{
+    color: rgba(255,255,255,0.7);
+}
+
+.footer-body{
+    margin: 0 auto;
+    max-width: 1300px;
+    min-width: 500px;
+    display: flex;
+    justify-content: space-evenly;
+    padding-left: 100px;
+    padding-bottom: 15px;
+}
+
+.footer-body h3{
+    color: white;
+}
+
+.footer-body div:first-child{
+    flex: 5;
+}
+
+.footer-body div:last-child{
+    flex: 3;
+    text-align: center;
+}
+
+.footer-body a{
+    transition: .2s all;
+}
+
+.footer-body a:hover{
+    color: white;
+}

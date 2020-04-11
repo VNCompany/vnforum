@@ -81,3 +81,7 @@
     background: aliceblue;
     color: black;
 }
+
+.main-content{
+    min-height: 600px;
+}

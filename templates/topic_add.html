@@ -1,10 +1,5 @@
 {% extends "base.html" %}
 
-{% block head_connections %}
-    <script src="https://cdn.tiny.cloud/1/08nfb0rf2nxt0okfs6lv8f05zqidetitvfzmdh3eokrvqf3e/tinymce/5/tinymce.min.js"
-            referrerpolicy="origin"></script>
-{% endblock %}
-
 {% block content %}
     <div class="uni-form">
         <h2>{{ title }}</h2>
@@ -45,26 +40,31 @@
             {% endfor %}
             <div>
                 <p>{{ form.content.label }}</p>
-                {{ form.content() }}
+                <div id="vne-content-block"></div>
             </div>
             {% for error in form.content.errors %}
                 <div class="error">{{ error }}</div>
             {% endfor %}
             <p>
                 {% if submit is defined %}
-                    <input type="button" class="flat-button submit-btn" value="{{ submit }}" id="submit-form-button">
+                    <input type="submit" class="flat-button submit-btn" value="{{ submit }}" id="submit-form-button">
                 {% else %}
-                    <input type="button" class="flat-button submit-btn" value="Создать" id="submit-form-button">
+                    <input type="submit" class="flat-button submit-btn" value="Создать" id="submit-form-button">
                 {% endif %}
             </p>
         </form>
     </div>
+{% endblock %}
 
+{% block scripts %}
     <script>
-        tinyMCE.init({
-            selector: 'textarea',
-            menubar: false,
-            statusbar: false
+        VNE.init({
+            id: "content",
+            name: "content",
+            selector: "#vne-content-block",
         });
+        VNE.css({
+            display: "block"
+        })
     </script>
 {% endblock %}

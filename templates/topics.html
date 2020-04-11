@@ -21,12 +21,13 @@
                     </div>
                     <div class="topic-desc">
                         <div class="topic-link">
+                            {% if topic.is_closed %}
+                                <span style="color: red">Закрыта</span>
+                            {% elif not topic.is_writeable %}
+                                <span style="color: green">Только чтение</span>
+                            {% endif %}
                             <a href="/topic/{{ topic.id }}">
-                                {% if topic.title|length > 96 %}
-                                    {{ topic.title[:20] }}
-                                {% else %}
-                                    {{ topic.title }}
-                                {% endif %}
+                                {{ topic.short_title(67) }}
                             </a>
                         </div>
                         <p>

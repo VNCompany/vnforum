@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <div class="uni-form">
+        <h2>{{ title }}</h2>
+        {% if error is defined %}
+            <div class="input-error">{{ error }}</div>
+        {% endif %}
+        <form method="post">
+            {{ form.hidden_tag() }}
+            <div>
+                <div class="disable-block" id="c-block">
+                    <textarea name="editor" id="editor" required="">{{ last_content }}</textarea>
+                </div>
+            </div>
+            <div><input type="submit" class="flat-button submit-btn" style="width: 200px" value="Править"></div>
+        </form>
+    </div>
+{% endblock %}
+
+{% block scripts %}
+    <script>
+        VNE.init({
+            "id": "editor",
+            "name": "editor",
+            "selector": "#c-block",
+            "content_selector": "#editor"
+        });
+        VNE.css({
+            display: "block"
+        })
+    </script>
+{% endblock %}

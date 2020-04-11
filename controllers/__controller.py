@@ -32,7 +32,8 @@ class Controller:
         if "css" not in self.view_includes.keys():
             self.view_includes["css"] = ""
         for name in names:
-            self.view_includes["css"] += f'<link rel="stylesheet" href="{self.static("css/" + name)}">\n'
+            self.view_includes["css"] += f'<link type="text/css" rel="stylesheet" href="' \
+                                         f'{self.static("css/" + name)}">\n'
 
     def javascript(self, *names):
         for name in names:
