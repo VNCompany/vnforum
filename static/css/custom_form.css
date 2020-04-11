@@ -3,6 +3,7 @@
     border-radius: 8px;
     background: white;
     margin-top: 10px;
+    min-height: 600px;
 }
 
 .uni-form label:not(.disable-block){

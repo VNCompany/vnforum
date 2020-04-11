@@ -10,6 +10,7 @@ class Controller:
     jquery_enabled = True
 
     def __init__(self):
+        self.view_includes.clear()
         self.view_includes["css"] = ""
         self.css("main.css")
         self.view_includes["js"] = ""

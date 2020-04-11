@@ -248,3 +248,7 @@ footer *{
 .footer-body a:hover{
     color: white;
 }
+
+.main-content{
+    min-height: 600px;
+}

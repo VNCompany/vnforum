@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <div class="uni-form">
+        <form method="POST">
+            <div>{{ form.hidden_tag() }}</div>
+            <div>
+                <p>Категория:</p>
+                <select id="cat_id" name="cat_id" required="" autocomplete="off">
+                    {% for choice in cat_choices %}
+                        <option value="{{ choice[0] }}"
+                                {% if choice[0] == topic.category.id|string() %}selected=""{% endif %}
+                        >{{ choice[1] }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div>
+                <p>Заголовок:</p>
+                <input type="text" name="{{ form.title.name }}" required="" value="{{ topic.title }}">
+            </div>
+
+            <div>
+                <p>Теги (через запятую):</p>
+                <input type="text" name="{{ form.tags.name }}" value="{{ topic.tags }}">
+            </div>
+
+            <div style="margin-top: 10px">
+                <label>
+                    <input type="checkbox" name="{{ form.is_writeable.name }}"
+                           {% if topic.is_writeable %}checked=""{% endif %}>
+                    Разрешить редактирование
+                </label>
+            </div>
+
+            <div>
+                <label>
+                    <input type="checkbox" name="{{ form.is_closed.name }}"
+                           {% if topic.is_closed %}checked=""{% endif %}>
+                    Закрыть тему
+                </label>
+            </div>
+
+            <div>
+                <input class="flat-button submit-btn" type="submit" value="Сохранить">
+            </div>
+        </form>
+    </div>
+{% endblock %}

@@ -152,8 +152,12 @@ class DbwEditTopic:
     def get_topic(self) -> Topic:
         return self.topic
 
+    def get_cat_choices(self):
+        cats = self.session.query(Category).all()
+        return [(str(cat.id), cat.title) for cat in cats]
+
     def update_topic(self, cat_id: int, title: str, tags: str, is_w: bool, is_c: bool):
-        if not title or title.strip():
+        if not title or title.strip() == "":
             return "error"
         self.topic.category_id = cat_id
         self.topic.title = title

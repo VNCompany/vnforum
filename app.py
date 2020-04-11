@@ -5,6 +5,7 @@ import db_session as dbs
 import flask_login as fl
 from flask_login import login_required, logout_user
 from components.db_worker import DataBaseWorker
+from components.db_worker import DbwEditTopic
 
 from controllers.index_controller import IndexController
 from controllers.register_controller import RegisterController
@@ -17,6 +18,7 @@ from controllers.topic_add_controller import TopicAddController
 from controllers.topics_controller import TopicsController
 from controllers.topic_controller import TopicController
 from controllers.post_editor_controller import PostEditorController
+from controllers.topic_edit_controller import TopicEditController
 
 from models.user_model import User
 from models.category_model import Category
@@ -99,6 +101,20 @@ def topic_add():
         return controller.view(dbs.create_session(), category=request.args['category'])
     else:
         return controller.view(dbs.create_session())
+
+
+@app.route("/topic/<int:topic_id>/edit", methods=['GET', 'POST'])
+@login_required
+def topic_edit(topic_id: int):
+    dbw = DbwEditTopic(dbs.create_session(), topic_id, fl.current_user)
+    status = dbw.check()
+    if status[0] == "ok":
+        controller = TopicEditController(dbw)
+        return controller.view()
+    elif status[0] == "404_error":
+        abort(404)
+    else:
+        return PermErrorController().view(error=status[1])
 
 
 @app.route("/category/<int:cat_id>", methods=['GET'])

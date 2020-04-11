@@ -9,7 +9,14 @@
     <p class="navigation"><a href="/category/{{ topic.category.id }}">{{ topic.category.title }}</a> > <span
             class="nav-topic">{{ topic.short_title() }}</span></p>
     <h2>Обсуждение:</h2>
-    {% if current_user.is_authenticated and topic.can_close(current_user) %}
+    {% if current_user.is_authenticated and current_user.is_admin() %}
+        <p>
+            <a href="/topic/{{ topic.id }}/edit" class="flat-button post_add-btn" style="width: 75px">Изменить</a>
+            {% if not topic.is_closed %}
+                <a href="/topic/{{ topic.id }}/close" class="flat-button post_add-btn" style="width: 113px">Закрыть тему</a>
+            {% endif %}
+        </p>
+    {% elif current_user.is_authenticated and topic.can_close(current_user) %}
         <p>
             <a href="/topic/{{ topic.id }}/close" class="flat-button post_add-btn" style="width: 113px">Закрыть тему</a>
         </p>
