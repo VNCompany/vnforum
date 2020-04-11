@@ -203,7 +203,12 @@ menu>li:first-child{
     background: darkcyan;
     color: white;
 }
-.func-btn:hover{
+.func-r-btn{
+    text-decoration: none;
+    background: red;
+    color: white;
+}
+.func-btn:hover, .func-r-btn:hover{
     background: transparent;
     color: black;
     cursor: pointer;

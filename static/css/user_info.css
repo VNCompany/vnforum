@@ -1,0 +1,72 @@
+.main-content{
+    min-height: 800px;
+    margin: 0 auto;
+}
+
+.user_profile{
+    width: 500px;
+    background: white;
+    min-height: 700px;
+    padding: 20px;
+    margin: 20px auto;
+    border: 1px solid whitesmoke;
+    border-radius: 18px;
+    box-shadow: gray 0 1px 1px;
+}
+
+.u-image{
+    display: block;
+    width: 222px;
+    height: 222px;
+    margin: 0 auto;
+}
+
+.u-name{
+    margin: 10px 0 40px 0;
+    font-size: 26px;
+    text-align: center;
+    color: #0d43fa;
+}
+
+.u-about > div:first-child{
+    font-size: 22px;
+    font-weight: bold;
+    background: #2196F3;
+    text-align: center;
+    color: white;
+    margin-bottom: 20px;
+}
+
+.u-prop{
+    margin-bottom: 15px;
+}
+
+.u-prop p{
+    margin: 5px 0;
+    text-align: center;
+    font-size: 20px;
+    word-break: break-word;
+}
+
+.u-prop p span{
+    font-size: 30px;
+    word-break: break-word;
+}
+
+.u-prop p:first-child{
+    color: #2852eb;
+}
+
+.vote-btn{
+    display: inline-block;
+    background-size: 22px 22px;
+    width: 22px; height: 22px;
+}
+
+.vote-up{
+    background-image: url("/static/img/icons/green_up.png");
+}
+
+.vote-down{
+    background-image: url("/static/img/icons/red_down.png");
+}

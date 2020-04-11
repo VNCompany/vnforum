@@ -96,6 +96,8 @@
                                    href="{{ generate_edit_link(post.id, page_number, loop.index) }}">Править</a>
                                 <a class="flat-button func-btn"
                                    onclick="reply_to('{{ post.user.nickname }}')">Ответить</a>
+                                <a class="flat-button func-r-btn"
+                                   onclick="delete_post('{{ post.id }}')">Удалить</a>
                             {% elif current_user.is_authenticated and topic.can_post(current_user) %}
                                 <a class="flat-button func-btn"
                                    onclick="reply_to('{{ post.user.nickname }}')">Ответить</a>
@@ -138,6 +140,16 @@
             $("html, body").animate({
                 scrollTop: $("#editor-block").offset().top
             });
+        }
+
+        function delete_post(post_id) {
+            $.ajax({
+                type: "get",
+                url: "/post/" + post_id + "/delete",
+                success: function () {
+                    document.location.reload();
+                }
+            })
         }
     </script>
 {% endblock %}

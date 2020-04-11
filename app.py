@@ -19,6 +19,7 @@ from controllers.topics_controller import TopicsController
 from controllers.topic_controller import TopicController
 from controllers.post_editor_controller import PostEditorController
 from controllers.topic_edit_controller import TopicEditController
+from controllers.user_info_controller import UserInfoController
 
 from models.user_model import User
 from models.category_model import Category
@@ -216,6 +217,46 @@ def post_add(topic_id: int):
 def post_edit(post_id: int):
     controller = PostEditorController(dbs.create_session(), post_id)
     return controller.view()
+
+
+@app.route("/post/<int:post_id>/delete")
+@login_required
+def post_delete(post_id: int):
+    if not fl.current_user.is_admin():
+        return "You're not administrator"
+    session = dbs.create_session()
+    post = session.query(Post).get(post_id)
+    if post:
+        session.delete(post)
+        session.commit()
+        return "ok"
+    else:
+        return "The post doesn't exist"
+
+
+@app.route("/topic/<int:topic_id>/delete")
+@login_required
+def topic_delete(topic_id: int):
+    if not fl.current_user.is_admin():
+        return "You're not administrator"
+    session = dbs.create_session()
+    topic = session.query(Topic).get(topic_id)
+    if not topic:
+        return "The topic doesn't exists"
+    session.query(Post).filter(Post.topic_id == topic_id).delete()
+    session.commit()
+    session.delete(topic)
+    session.commit()
+    return "ok"
+
+
+@app.route("/user/<int:user_id>")
+@fl.login_required
+def get_user_info(user_id: int):
+    if fl.current_user.is_banned():
+        return PermErrorController().view(error="Вы заблокированы. Доступ к данному ресурсу запрещён")
+    else:
+        return UserInfoController(dbs.create_session(), user_id).view()
 
 
 def perm_error(error=""):
