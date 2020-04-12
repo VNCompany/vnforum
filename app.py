@@ -240,6 +240,54 @@ def topic_delete(topic_id: int):
     return "ok"
 
 
+@app.route("/profile/user_edit", methods=['POST'])
+def user_edit():
+    user = fl.current_user
+    if not user.is_authenticated:
+        return "Ваша сессия истекла"
+    data = request.form
+    if "type" not in data.keys():
+        return "Неверный запрос"
+
+    if data['type'] == "user_change_password":
+        if not data.get('opw', None) or not data.get('npw', None):
+            return "Неверный запрос"
+        elif not user.check_password(data['opw']):
+            return "Неверный старый пароль"
+        else:
+            session = dbs.create_session()
+            guser = session.query(User).get(user.id)
+            guser.set_password(data['npw'])
+            session.add(guser)
+            session.commit()
+            logout_user()
+            return "ok"
+    elif data['type'] == "user_change_email":
+        if not data.get('email', None):
+            return "Неверный запрос"
+        if user.email == data['email']:
+            return "Email совпадает со старым"
+        session = dbs.create_session()
+        guser = session.query(User).get(user.id)
+        guser.email = data['email']
+        session.add(guser)
+        session.commit()
+        return "ok"
+    elif data['type'] == "user_change_nickname":
+        if not data.get('nickname', None):
+            return "Неверный запрос"
+        if user.nickname == data['nickname']:
+            return "Никнейм совпадает со старым"
+        if len(user.nickname) > 25:
+            return "Никнейм слишком длинный"
+        session = dbs.create_session()
+        guser = session.query(User).get(user.id)
+        guser.nickname = data['nickname']
+        session.add(guser)
+        session.commit()
+        return "ok"
+
+
 @app.route("/user/<int:user_id>")
 @fl.login_required
 def get_user_info(user_id: int):

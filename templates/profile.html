@@ -23,14 +23,42 @@
             </div>
         </div>
 
+        {% if error is defined %}
+            <p style="color: red">{{ error }}</p>
+        {% endif %}
+
         <div class="p-edit">
             <p>Изменить аватар:</p>
-            {% if error is defined %}
-                <p style="color: red">{{ error }}</p>
-            {% endif %}
             <form enctype="multipart/form-data" method="post" id="change_avatar_form">
                 <input type="file" accept="image/*" name="user_avatar">
                 <a id="change_avatar-btn" class="flat-button form-btn disabled">Загрузить</a>
+            </form>
+        </div>
+
+        <div class="p-edit">
+            <p>Изменить никнейм:</p>
+            <form enctype="multipart/form-data" method="post" id="change_avatar_form">
+                <input type="text" placeholder="Новый никнейм" name="nick_text" required>
+                <input id="change_nick_btn" type="button" value="Сохранить" class="flat-button form-btn">
+            </form>
+        </div>
+
+        <div class="p-edit">
+            <p>Изменить email:</p>
+            <form enctype="multipart/form-data" method="post" id="change_avatar_form">
+                <input type="email" placeholder="Новый email" name="email_text" required value="{{ user.email }}">
+                <input id="change_email_btn" type="button" value="Сохранить" class="flat-button form-btn">
+            </form>
+        </div>
+
+        <div class="p-edit">
+            <p>Изменить пароль:</p>
+            <form enctype="multipart/form-data" method="post" id="change_avatar_form" autocomplete="off">
+                <input type="password" name="old_pw" style="width: 200px" placeholder="Старый пароль" required>
+                <input type="password" name="new_pw" style="width: 200px" placeholder="Новый пароль" required>
+                <input type="password" name="rep_pw" style="width: 200px" placeholder="Повтор" required>
+                <input id="change_pw_btn" type="button" style="margin-top: 10px" value="Сохранить"
+                       class="flat-button form-btn">
             </form>
         </div>
     </div>
@@ -38,6 +66,25 @@
 
 {% block scripts %}
     <script type="text/javascript">
+        function validate(email_selector) {
+            let reg = /^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/;
+            let address = $(email_selector).val();
+            if (reg.test(address) === false) {
+                alert('Введите корректный e-mail');
+                return false;
+            }
+            return true;
+        }
+
+        function validate_nick(nick) {
+            let reg = /^[0-9A-Za-z-_А-Яа-я]+$/;
+            if (reg.test(nick) === false) {
+                alert('Введите корректный никнейм');
+                return false;
+            }
+            return true;
+        }
+
         $(document).ready(function () {
             $('input[type="file"]').change(function () {
                 $('#change_avatar-btn').removeClass("disabled");
@@ -46,6 +93,62 @@
             $('#change_avatar-btn').click(function () {
                 if ($('input[type="file"]')[0].files.length > 0) {
                     $("#change_avatar_form").submit();
+                }
+            });
+
+            $('.form-btn').click(function () {
+                switch ($(this).attr("id")) {
+                    case "change_pw_btn":
+                        let old_pw = $('input[name="old_pw"]').val();
+                        let new_pw = $('input[name="new_pw"]').val();
+                        let rep_pw = $('input[name="rep_pw"]').val();
+                        if (new_pw.length < 8)
+                            alert("Длина пароля должна быть не менее 8 символов");
+                        else if (new_pw !== rep_pw)
+                            alert("Пароли различаются");
+                        else if (new_pw === old_pw) {
+                            alert("Старый пароль совпадает с новым");
+                        } else {
+                            $.post("/profile/user_edit", {
+                                "type": "user_change_password",
+                                "opw": old_pw,
+                                "npw": new_pw
+                            }, function (msg) {
+                                if (msg === "ok") {
+                                    alert("Пароль изменён");
+                                    document.location.href = "login";
+                                } else alert(msg);
+                            });
+                        }
+                        break;
+                    case "change_email_btn":
+                        if (validate('input[name="email_text"]')) {
+                            let email = $('input[name="email_text"]').val();
+                            $.post("/profile/user_edit", {
+                                "type": "user_change_email",
+                                "email": email
+                            }, function (msg) {
+                                if (msg === "ok")
+                                    alert("Email изменён");
+                                else alert(msg);
+                            });
+                        }
+                        break;
+                    case "change_nick_btn":
+                        let nick = $('input[name="nick_text"]').val();
+                        if (nick === "") alert("Пустое поле");
+                        else if (nick.length > 25) alert("Слишком длинный ник");
+                        else if (validate_nick(nick)){
+                            $.post("/profile/user_edit", {
+                                "type": "user_change_nickname",
+                                "nickname": nick
+                            }, function (msg) {
+                                if (msg === "ok")
+                                    alert("Никнейм изменён. Перезагрузите страницу");
+                                else alert(msg);
+                            });
+                        }
+                        break;
                 }
             });
         });
