@@ -4,27 +4,11 @@ from flask import Flask, redirect, send_from_directory, request, abort
 import db_session as dbs
 import flask_login as fl
 from flask_login import login_required, logout_user
+
 from components.db_worker import DataBaseWorker
 from components.db_worker import DbwEditTopic
 
-from controllers.index_controller import IndexController
-from controllers.register_controller import RegisterController
-from controllers.login_controller import LoginController
-from controllers.information_controller import InformationController
-from controllers.category_add_controller import CategoryAddController
-from controllers.error404_controller import Error404Controller
-from controllers.perm_error_controller import PermErrorController
-from controllers.topic_add_controller import TopicAddController
-from controllers.topics_controller import TopicsController
-from controllers.topic_controller import TopicController
-from controllers.post_editor_controller import PostEditorController
-from controllers.topic_edit_controller import TopicEditController
-from controllers.user_info_controller import UserInfoController
-
-from models.user_model import User
-from models.category_model import Category
-from models.topic_model import Topic
-from models.post_model import Post
+from __imports import *
 
 UPLOAD_FOLDER = './uploads'
 
@@ -33,8 +17,7 @@ app = Flask(__name__)
 app.config['SECRET_KEY'] = "yandexlyceum_secret_key"
 app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
-
-PAGE_COUNT = 20
+app.config['MAX_CONTENT_SIZE'] = 1024 * 1024 * 8
 
 login_manager = fl.LoginManager()
 login_manager.init_app(app)
@@ -232,6 +215,13 @@ def post_delete(post_id: int):
         return "ok"
     else:
         return "The post doesn't exist"
+
+
+@app.route("/profile", methods=['GET', 'POST'])
+@login_required
+def profile():
+    controller = ProfileController(dbs.create_session())
+    return controller.view()
 
 
 @app.route("/topic/<int:topic_id>/delete")

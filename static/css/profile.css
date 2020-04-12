@@ -1,0 +1,60 @@
+.profile{
+    width: 800px;
+    margin: 30px auto;
+    min-height: 800px;
+    background: white;
+}
+
+.p-title{
+    background: #2196F3;
+    font-size: 24px;
+    color: white;
+    padding: 5px 20px;
+}
+
+.p-info{
+    display: flex;
+    padding: 20px 50px;
+}
+
+.u-avatar{
+    flex-basis: 150px;
+}
+
+.u-info p{
+    font-size: 18px;
+    margin: 13px 0 11px 25px;
+}
+
+.u-nickname{
+    font-weight: bold;
+    color: #2852eb;
+}
+
+.flat-button{
+    border: 1px solid transparent;
+    transition: .2s all;
+    text-decoration: none;
+}
+.flat-button:hover{
+    cursor: pointer;
+    border: 1px solid black;
+    background: transparent;
+    color: black;
+}
+.form-btn{
+    background: #2196F3;
+    color: white;
+}
+.disabled{
+    color: black;
+}
+
+.p-edit{
+    margin-bottom: 15px;
+    padding: 15px;
+}
+
+.p-edit p:first-child{
+    font-weight: bold;
+}
