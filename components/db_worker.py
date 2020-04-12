@@ -2,13 +2,14 @@ import re
 from sqlalchemy.orm import Session
 from flask_login import current_user
 
-from .pagination import html_pagination, get_page, POSTS_PAGE_LENGTH, TOPICS_PAGE_LENGTH
-from .sc_man import short_code_parser
+from components.pagination import get_page, POSTS_PAGE_LENGTH, TOPICS_PAGE_LENGTH
 
 from models.user_model import User
 from models.topic_model import Topic
 from models.category_model import Category
 from models.post_model import Post
+
+from werkzeug.urls import url_encode
 
 
 class DataBaseWorker:
@@ -170,3 +171,6 @@ class DbwEditTopic:
 
     def redirect_to(self):
         return "/topic/" + str(self.topic_id)
+
+
+print(url_encode("Привет мир!"))

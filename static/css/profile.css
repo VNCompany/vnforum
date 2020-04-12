@@ -1,5 +1,5 @@
 .profile{
-    width: 800px;
+    width: 900px;
     margin: 30px auto;
     min-height: 800px;
     background: white;
@@ -64,4 +64,35 @@ input[type=text], input[type=password], input[type=email]{
     border: 1px solid gray;
     border-radius: 4px;
     width: 300px;
+}
+
+td{
+    word-break: break-word;
+    padding: 15px 0;
+}
+
+td:first-child{
+    padding-left: 5px;
+    width: 60%;
+}
+
+td:nth-child(2), td:nth-child(3){
+    width: 20%;
+    text-align: center;
+}
+
+th{
+    background: #2196F3;
+    color: white;
+}
+
+td a{
+    text-decoration: none;
+    transition: .2s;
+    color: #0d43fa;
+}
+
+td a:hover{
+    text-decoration: underline;
+    color: #2196F3;
 }

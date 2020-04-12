@@ -5,6 +5,7 @@ from sqlalchemy.orm import Session
 from werkzeug.utils import secure_filename
 
 from models.user_model import User
+from models.topic_model import Topic
 
 
 class ProfileController(Controller):
@@ -18,8 +19,12 @@ class ProfileController(Controller):
         self.session = session
 
     def view(self, **kwargs):
+        user_topics = self.session.query(Topic).filter(Topic.user_id == current_user.id)
+        user_topics = sorted([(t.id, t.short_title(100), t.date, t.get_last_post().date) for t in user_topics],
+                             key=lambda tt: tt[2],
+                             reverse=True)
         if request.method == 'GET':
-            return super(ProfileController, self).view(user=current_user)
+            return super(ProfileController, self).view(user=current_user, topics=user_topics)
         else:
             user_avatar = request.files['user_avatar']
             if user_avatar.filename and len(user_avatar.filename.split('.')) > 1:
@@ -39,12 +44,15 @@ class ProfileController(Controller):
                         self.session.add(user)
                         self.session.commit()
                         current_user.avatar = fn
-                        return super(ProfileController, self).view(user=current_user)
+                        return super(ProfileController, self).view(user=current_user, topics=user_topics)
                     else:
                         return super(ProfileController, self).view(user=current_user,
-                                                                   error="Ваша сессия истекла. Перезагрузите страницу")
+                                                                   error="Ваша сессия истекла. Перезагрузите страницу",
+                                                                   topics=user_topics)
                 else:
                     return super(ProfileController, self).view(user=current_user,
-                                                               error="Размер файла не должен превышать 1 МБ")
+                                                               error="Размер файла не должен превышать 1 МБ",
+                                                               topics=user_topics)
             else:
-                return super(ProfileController, self).view(user=current_user, error="Неверный формат имени")
+                return super(ProfileController, self).view(user=current_user, error="Неверный формат имени",
+                                                           topics=user_topics)
