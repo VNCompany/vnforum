@@ -28,6 +28,14 @@
         {% endif %}
 
         <div class="p-edit">
+            <p>API ключ:</p>
+            <input type="text" width="" value="{{ user.token }}" readonly style="width: 313px">
+            <p style="color: red; margin-bottom: 0">
+                Этот ключ предназначен для работы с API. Никому не сообщайте его!
+            </p>
+        </div>
+
+        <div class="p-edit">
             <p>Изменить аватар:</p>
             <form enctype="multipart/form-data" method="post" id="change_avatar_form">
                 <input type="file" accept="image/*" name="user_avatar">
@@ -156,7 +164,7 @@
                         let nick = $('input[name="nick_text"]').val();
                         if (nick === "") alert("Пустое поле");
                         else if (nick.length > 25) alert("Слишком длинный ник");
-                        else if (validate_nick(nick)){
+                        else if (validate_nick(nick)) {
                             $.post("/profile/user_edit", {
                                 "type": "user_change_nickname",
                                 "nickname": nick

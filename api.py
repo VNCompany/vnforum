@@ -67,7 +67,7 @@ def api_user_get():
     })
 
 
-@blueprint.route("/api/topic_info_get/", methods=['GET'])
+@blueprint.route("/api/topic_get/", methods=['GET'])
 def api_topic_info_get():
     def error(msg: str):
         return jsonify({
