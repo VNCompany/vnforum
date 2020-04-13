@@ -93,6 +93,25 @@ class DataBaseWorker:
             return items, result[1]
 
     @staticmethod
+    def search_topic(session: Session, s_value: str, page: int, t: int):
+        topics = session.query(Topic).order_by(Topic.date.desc()).all()
+        searched = []
+        if t == 0:
+            for topic in topics:
+                if s_value.lower() in topic.tags:
+                    searched.append(topic.id)
+        else:
+            for topic in topics:
+                if s_value.lower() == topic.title.lower() or s_value.lower() in topic.title.lower():
+                    searched.append(topic.id)
+        result = get_page(searched, page, TOPICS_PAGE_LENGTH)
+        if result is None:
+            return None
+        else:
+            items = session.query(Topic).filter(Topic.id.in_(result[0])).order_by(Topic.id.desc()).all()
+            return items, result[1]
+
+    @staticmethod
     def vote_user(session: Session, user_id: int, count: int):
         if not current_user.is_authenticated:
             return "error"

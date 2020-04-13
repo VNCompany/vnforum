@@ -310,9 +310,8 @@ def error404(e):
 
 @app.route("/search")
 def search():
-    if request.args.get("tag", None):
-        return "<pre>" + request.args['tag'] + "</pre>"
-    return "fail"
+    controller = SearchController()
+    return controller.view()
 
 
 if __name__ == '__main__':
