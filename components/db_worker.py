@@ -9,8 +9,6 @@ from models.topic_model import Topic
 from models.category_model import Category
 from models.post_model import Post
 
-from werkzeug.urls import url_encode
-
 
 class DataBaseWorker:
     re_login = r"^[0-9A-Za-z-_]+$"
