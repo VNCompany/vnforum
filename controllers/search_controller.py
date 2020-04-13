@@ -1,6 +1,7 @@
 from .__imports import *
 
 from models.topic_model import Topic
+from components.urls import url_encode
 import re
 
 
@@ -20,7 +21,7 @@ class SearchController(Controller):
             self.view_values()
             return super(SearchController, self).view()
         else:
-            return "fail"
+            return self.view_form()
 
     def view_values(self):
         self.__title__ = "Результаты поиска"
@@ -37,6 +38,16 @@ class SearchController(Controller):
             self.pagination(pages[1], self.page, self.page_link())
         else:
             self.view_includes['topics'] = []
+
+    def view_form(self):
+        self.__view__ = "search_form"
+        if request.method == 'GET':
+            return super(SearchController, self).view()
+        else:
+            if request.form.get('type', "") == "Искать по тегам":
+                return redirect("/search?tag=" + request.form.get('search_text', "none"))
+            else:
+                return redirect("/search?text=" + request.form.get('search_text', "none"))
 
     @staticmethod
     def page_link():

@@ -308,7 +308,7 @@ def error404(e):
     return controller.view()
 
 
-@app.route("/search")
+@app.route("/search", methods=['GET', 'POST'])
 def search():
     controller = SearchController()
     return controller.view()

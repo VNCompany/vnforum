@@ -97,9 +97,17 @@ class DataBaseWorker:
         topics = session.query(Topic).order_by(Topic.date.desc()).all()
         searched = []
         if t == 0:
+            is_single = len(s_value.split(",")) < 2
             for topic in topics:
-                if s_value.lower() in topic.tags:
-                    searched.append(topic.id)
+                if is_single:
+                    if s_value.lower() in topic.tags:
+                        searched.append(topic.id)
+                else:
+                    vals = s_value.split(',')
+                    for val in vals:
+                        if val.lower() in topic.tags:
+                            searched.append(topic.id)
+                            break
         else:
             for topic in topics:
                 if s_value.lower() == topic.title.lower() or s_value.lower() in topic.title.lower():

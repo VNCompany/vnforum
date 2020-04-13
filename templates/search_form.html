@@ -1,10 +1,69 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+{% extends "base.html" %}
 
-</body>
-</html>
+{% block head_connections %}
+    <style>
+        .search-form {
+            margin: 30px auto 10px auto;
+            width: 500px;
+            border-radius: 8px;
+            background: white;
+            height: 500px;
+        }
+
+        .submit-btn {
+            display: block;
+            width: 150px;
+            margin: 0 auto 10px auto;
+            background: #2196F3;
+            color: white;
+            border-color: transparent;
+        }
+
+        .submit-btn:hover {
+            background: white;
+            color: dimgray;
+            border-color: black;
+            cursor: pointer;
+        }
+
+        label {
+            display: block;
+            padding: 15px 30px;
+        }
+
+        select, input[type=text] {
+            font-size: 18px;
+            width: 100%;
+            padding: 5px;
+            border-radius: 6px;
+            border: 1px solid gray;
+        }
+
+        input[type=text]{
+            box-sizing: border-box;
+            margin: 0;
+        }
+    </style>
+{% endblock %}
+
+{% block content %}
+    <div class="search-form">
+        <h1 style="text-align: center; padding-top: 50px">Поиск:</h1>
+        <form method="post">
+            <label>
+                <select name="type" style="font-size: 18px">
+                    <option name="tags">Искать по тегам</option>
+                    <option name="text">Искать по заголовкам</option>
+                </select>
+            </label>
+            <div>
+                <label>
+                    <input type="text" name="search_text" placeholder="Строка поиска" required>
+                </label>
+            </div>
+            <label>
+                <input type="submit" class="flat-button submit-btn" value="Искать">
+            </label>
+        </form>
+    </div>
+{% endblock %}
