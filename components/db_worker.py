@@ -171,6 +171,3 @@ class DbwEditTopic:
 
     def redirect_to(self):
         return "/topic/" + str(self.topic_id)
-
-
-print(url_encode("Привет мир!"))

@@ -308,6 +308,13 @@ def error404(e):
     return controller.view()
 
 
+@app.route("/search")
+def search():
+    if request.args.get("tag", None):
+        return "<pre>" + request.args['tag'] + "</pre>"
+    return "fail"
+
+
 if __name__ == '__main__':
     dbs.global_init("db/database.sqlite")
     app.run(host="127.0.0.1", port=80)

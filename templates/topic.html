@@ -11,7 +11,7 @@
     <h2>Обсуждение:</h2>
     <div class="topic-tags">
         {% for tag in topic.tags.split(",") %}
-            <a href="/search?tag={{ tag }}">{{ tag }}</a>
+            <a href="/search?tag={{ url_encode(tag) | safe }}">{{ tag }}</a>
         {% endfor %}
     </div>
     {% if current_user.is_authenticated and current_user.is_admin() %}

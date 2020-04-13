@@ -1,5 +1,6 @@
 from flask import Flask, url_for, render_template
 from components.pagination import html_pagination
+from db_session import create_session
 
 
 class Controller:
@@ -8,6 +9,7 @@ class Controller:
     view_includes = {}
 
     jquery_enabled = True
+    db_session = None
 
     def __init__(self):
         self.view_includes.clear()
@@ -15,6 +17,7 @@ class Controller:
         self.css("main.css")
         self.view_includes["js"] = ""
         self.javascript("jquery.js", "main.js")
+        self.db_session = create_session()
 
     @staticmethod
     def static(path: str):

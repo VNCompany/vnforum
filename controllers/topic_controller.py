@@ -4,6 +4,7 @@ from sqlalchemy.orm import Session
 
 from models.topic_model import Topic
 from components.sc_man import short_code_parser
+from components.urls import url_encode
 import base64
 
 
@@ -37,6 +38,7 @@ class TopicController(Controller):
             self.view_includes['generate_content'] = short_code_parser
             self.view_includes['page_number'] = page
             self.view_includes['generate_edit_link'] = self.gen_link
+            self.view_includes['url_encode'] = url_encode
             return super(TopicController, self).view(**kwargs)
 
     @staticmethod
