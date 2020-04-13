@@ -4,6 +4,7 @@ from db_session import SqlAlchemyBase
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import UserMixin
 from sqlalchemy import orm
+from hashlib import md5
 
 # Statuses:
 # 0 - not_authenticated
@@ -23,6 +24,7 @@ class User(SqlAlchemyBase, UserMixin):
     sex = sql.Column(sql.String, nullable=False)
     nickname = sql.Column(sql.String, nullable=False, unique=True)
     reg_date = sql.Column(sql.DateTime, default=datetime.datetime.now)
+    token = sql.Column(sql.String)
 
     status = sql.Column(sql.Integer, nullable=False, default=1)
     rating = sql.Column(sql.Integer, default=0)
@@ -44,6 +46,7 @@ class User(SqlAlchemyBase, UserMixin):
 
     def set_password(self, password):
         self.password = generate_password_hash(password)
+        self.token = md5((str(self.id) + password).encode()).hexdigest()
 
     def check_password(self, password):
         return check_password_hash(self.password, password)

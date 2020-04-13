@@ -1,6 +1,6 @@
 import os
 import json
-from flask import Flask, redirect, send_from_directory, request, abort
+from flask import Flask, redirect, send_from_directory, request, abort, jsonify
 import db_session as dbs
 import flask_login as fl
 from flask_login import login_required, logout_user
@@ -9,6 +9,7 @@ from components.db_worker import DataBaseWorker
 from components.db_worker import DbwEditTopic
 
 from __imports import *
+import api
 
 UPLOAD_FOLDER = './uploads'
 
@@ -316,4 +317,5 @@ def search():
 
 if __name__ == '__main__':
     dbs.global_init("db/database.sqlite")
+    app.register_blueprint(api.blueprint)
     app.run(host="127.0.0.1", port=80)
