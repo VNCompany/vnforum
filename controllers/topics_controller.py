@@ -18,7 +18,8 @@ class TopicsController(Controller):
     def view(self, session: Session, page: int, **kwargs):
         opage = DataBaseWorker.get_topics(session, self.cat.id, page)
         if opage is None:
-            abort(404)
+            self.view_includes['topics'] = []
+            return super(TopicsController, self).view(**kwargs)
         else:
             self.pagination(opage[1], page, "?page=%id")
             self.view_includes['topics'] = opage[0]
