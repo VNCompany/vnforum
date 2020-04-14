@@ -9,4 +9,4 @@ class CategoryAddForm(FlaskForm):
                                     valid.Length(min=1, max=64)])
     description = TextAreaField("Описание:",
                                 validators=[valid.Length(max=300)])
-    icon = StringField("Класс иконки:", default="fa-c-default")
+    icon = StringField("Класс иконки:", default="fa-default")
