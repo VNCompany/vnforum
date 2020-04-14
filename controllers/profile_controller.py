@@ -19,6 +19,8 @@ class ProfileController(Controller):
         self.session = session
 
     def view(self, **kwargs):
+        if current_user.is_banned():
+            return abort(404)
         user_topics = self.session.query(Topic).filter(Topic.user_id == current_user.id)
         user_topics = sorted([(t.id, t.short_title(100), t.date, t.get_last_post().date) for t in user_topics],
                              key=lambda tt: tt[2],
