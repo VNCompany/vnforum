@@ -1,4 +1,5 @@
-from flask import Flask, url_for, render_template
+from flask import redirect, url_for, render_template
+from flask_login import current_user
 from components.pagination import html_pagination
 from db_session import create_session
 
@@ -26,6 +27,8 @@ class Controller:
     def view(self, **kwargs):
         if self.__view__ is None:
             raise AttributeError
+        elif current_user.is_authorized and current_user.is_banned():
+            return redirect("/logout")
         else:
             return render_template(str(self.__view__).replace(".", "/") + ".html",
                                    **kwargs,
