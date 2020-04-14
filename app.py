@@ -11,6 +11,7 @@ from components.db_worker import DbwEditTopic
 from __imports import *
 import api
 
+
 UPLOAD_FOLDER = './uploads'
 
 app = Flask(__name__)
