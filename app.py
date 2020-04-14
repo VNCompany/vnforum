@@ -318,4 +318,4 @@ def search():
 if __name__ == '__main__':
     dbs.global_init("db/database.sqlite")
     app.register_blueprint(api.blueprint)
-    app.run(host="127.0.0.1", port=80)
+    app.run(host="0.0.0.0")
