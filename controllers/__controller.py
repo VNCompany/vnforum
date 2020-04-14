@@ -27,7 +27,7 @@ class Controller:
     def view(self, **kwargs):
         if self.__view__ is None:
             raise AttributeError
-        elif current_user.is_authorized and current_user.is_banned():
+        elif current_user.is_authenticated and current_user.is_banned():
             return redirect("/logout")
         else:
             return render_template(str(self.__view__).replace(".", "/") + ".html",

@@ -7,6 +7,13 @@
         </div>
         <div class="u-name">
             {{ user.nickname }}
+            {% if user.is_banned() %}
+                <p style="color: gray;font-size: 21px;">Заблокирован</p>
+            {% elif user.is_admin() %}
+                <p style="color: red;font-size: 21px;">Администратор</p>
+            {% else %}
+                <p style="color: black;font-size: 21px;">Пользователь</p>
+            {% endif %}
         </div>
         <div class="u-about">
             <div>
