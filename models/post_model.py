@@ -14,7 +14,7 @@ class Post(SqlAlchemyBase):
     content = sql.Column(sql.String)
     topic_id = sql.Column(sql.Integer, sql.ForeignKey('topics.id'))
     date = sql.Column(sql.DateTime, default=datetime.datetime.now)
-    last_date = sql.Column(sql.DateTime, default=datetime.datetime.now)
+    last_date = sql.Column(sql.DateTime)
 
     rating = sql.Column(sql.Integer, default=0)
     votes = sql.Column(sql.String, default="")
