@@ -97,13 +97,14 @@ class DataBaseWorker:
         if t == 0:
             is_single = len(s_value.split(",")) < 2
             for topic in topics:
+                tags = topic.tags.lower().strip()
                 if is_single:
-                    if s_value.lower() in topic.tags:
+                    if s_value.lower().strip() in tags:
                         searched.append(topic.id)
                 else:
                     vals = s_value.split(',')
                     for val in vals:
-                        if val.lower() in topic.tags:
+                        if val.lower().strip() in tags:
                             searched.append(topic.id)
                             break
         else:
