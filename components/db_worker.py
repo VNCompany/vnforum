@@ -92,6 +92,7 @@ class DataBaseWorker:
 
     @staticmethod
     def search_topic(session: Session, s_value: str, page: int, t: int):
+        # topic search
         topics = session.query(Topic).order_by(Topic.date.desc()).all()
         searched = []
         if t == 0:
