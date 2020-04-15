@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <div class="users">
+        <h1>Админ-панель</h1>
+        <table>
+            <tr>
+                <th>ID</th>
+                <th>Login</th>
+                <th>Nickname</th>
+                <th>Status</th>
+                <th>Actions</th>
+            </tr>
+
+            {% for user in users %}
+                <tr>
+                    <td><a href="/user/{{ user.id }}">{{ user.id }}</a></td>
+                    <td>{{ user.login }}</td>
+                    <td>{{ user.nickname }}</td>
+                    <td>
+                        {% if user.status == 2 %}
+                            <span class="status-admin">Admin</span>
+                        {% elif user.status == 1 %}
+                            <span class="status-user">User</span>
+                        {% elif user.status == 3 %}
+                            <span class="status-blocked">Blocked</span>
+                        {% endif %}
+                    </td>
+                    <td class="td-actions">{{ get_actions(user) | safe }}</td>
+                </tr>
+            {% endfor %}
+        </table>
+    </div>
+{% endblock %}

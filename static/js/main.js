@@ -14,7 +14,7 @@ $(document).ready(function () {
         let popup = $("#profile-popup");
         if (popup.hasClass("popup-hidden")) {
             popup.css({ display: "block" }).animate({
-                height: 110
+                height: popup_height
             }, 100, function () {
                 popup.removeClass("popup-hidden")
             });

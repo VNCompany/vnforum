@@ -13,6 +13,7 @@ from controllers.topic_edit_controller import TopicEditController
 from controllers.user_info_controller import UserInfoController
 from controllers.profile_controller import ProfileController
 from controllers.search_controller import SearchController
+from controllers.admin_controller import AdminController
 
 from models.user_model import User
 from models.category_model import Category

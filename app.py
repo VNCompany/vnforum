@@ -57,10 +57,40 @@ def login():
 @app.route("/user/<int:user_id>/set_perm")
 @fl.login_required
 def set_user_perm(user_id: int):
+    if not fl.current_user.is_admin():
+        return "Error. You are not admin!"
     try:
-        return ""
+        if "status" not in request.args.keys():
+            return "Error. Status argument not found"
+        session = dbs.create_session()
+        user = session.query(User).get(user_id)
+        if not user:
+            return "Error. User not found"
+        status = request.args['status']
+        if status == "block":
+            user.status = 3
+            session.add(user)
+            session.commit()
+        elif status == "user":
+            user.status = 1
+            session.add(user)
+            session.commit()
+        elif status == "admin":
+            user.status = 2
+            session.add(user)
+            session.commit()
+        return redirect("/admin")
     except Exception as ex:
         return "Fatal error. " + str(ex)
+
+
+@app.route("/admin")
+@login_required
+def admin_panel():
+    if not fl.current_user.is_admin():
+        return redirect("/")
+    controller = AdminController()
+    return controller.view()
 
 
 @app.route("/logout")

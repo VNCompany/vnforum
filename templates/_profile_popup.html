@@ -1,6 +1,16 @@
 <div id="profile-popup" class="popup-hidden" style="height: 1px; display: none">
     <ul>
         <li><a href="/profile">Профиль</a></li>
+        {% if current_user.is_admin() %}
+            <li><a href="/admin">Админ-панель</a></li>
+            <script>
+                let popup_height = 160;
+            </script>
+        {% else %}
+            <script>
+                let popup_height = 110;
+            </script>
+        {% endif %}
         <li><a href="/logout">Выход</a></li>
     </ul>
 </div>

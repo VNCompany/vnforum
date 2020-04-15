@@ -1,0 +1,59 @@
+table{
+    width: 100%;
+}
+
+td{
+    padding: 10px;
+}
+
+td:last-child a{
+    transition: .2s all;
+    text-align: center;
+    background: #c4001e;
+    border-radius: 8px;
+    color: white;
+    padding: 5px;
+    text-decoration: none;
+    color: rgba(255, 255, 255, 0.7);
+    display: inline-block;
+    width: 125px;
+}
+
+td:last-child a:hover{
+    color: white;
+}
+
+td:last-child{
+    width: 280px;
+}
+
+th{
+    background: #2196F3;
+    padding: 5px;
+    color: rgba(255, 255, 255, 0.7);
+}
+
+td:nth-child(2), td:first-child, td:nth-child(4){
+    font-weight: bold;
+}
+
+.status-user{
+    color: #0d43fa;
+}
+.status-admin{
+    color: red;
+}
+.status-blocked{
+    color: dimgray;
+}
+
+td:first-child a{
+    text-decoration: none;
+    color: #2852eb;
+}
+td:first-child a:visited{
+    color: #2852eb;
+}
+td:first-child a:hover{
+    text-decoration: underline;
+}
