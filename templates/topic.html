@@ -78,7 +78,7 @@
                     <div class="p-body-content">
                         {{ generate_content(post.content) | safe }}
                     </div>
-                    {% if post.date != post.last_date %}
+                    {% if post.date <= post.last_date %}
                         <div class="last-edit">Последнее
                             редактирование: {{ post.last_date.strftime("%d.%m.%Y %H:%M") }}</div>
                     {% endif %}
