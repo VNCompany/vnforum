@@ -42,7 +42,7 @@
                         <p>Последнее</p>
                         <p>
                             {% if topic.posts|length > 0 %}
-                                {{ topic.get_last_post().last_date.strftime("%d.%m.%Y %H:%M") }}
+                                {{ topic.get_last_post().date.strftime("%d.%m.%Y %H:%M") }}
                             {% endif %}
                         </p>
                     </div>
