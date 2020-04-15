@@ -54,6 +54,15 @@ def login():
     return controller.view(dbs.create_session())
 
 
+@app.route("/user/<int:user_id>/set_perm")
+@fl.login_required
+def set_user_perm(user_id: int):
+    try:
+        return ""
+    except Exception as ex:
+        return "Fatal error. " + str(ex)
+
+
 @app.route("/logout")
 @login_required
 def logout():

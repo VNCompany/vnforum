@@ -54,7 +54,7 @@ $(document).ready(function () {
         })
     });
 
-    $('.post_add-btn').click(function () {
+    $('.post_send-btn').click(function () {
         let topic_id = $('#d-topic_id').attr("data-tid");
         $.ajax({
             type: "post",
