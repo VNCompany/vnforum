@@ -28,6 +28,7 @@ class DataBaseWorker:
                 return "Ошибка. Пользователь с таким email уже существует"
             elif u.nickname == user.nickname:
                 return "Ошибка. Пользователь с таким никнеймом уже существует"
+        user.status = 3
         session.add(user)
         session.commit()
         return "ok"
