@@ -1,10 +1,7 @@
 from .__imports import *
 from forms.login_form import LoginForm
 from sqlalchemy.orm import Session
-
 from flask_login import login_user
-
-from models.user_model import User
 
 
 class LoginController(Controller):

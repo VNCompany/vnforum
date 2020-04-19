@@ -29,8 +29,8 @@ class AdminController(Controller):
             '''
         elif user.status == 3:
             return f'''
-            <a href="/user/{user.id}/set_perm?status=user">Make admin</a>
-            <a href="/user/{user.id}/set_perm?status=admin">Unblock</a>
+            <a href="/user/{user.id}/set_perm?status=admin">Make admin</a>
+            <a href="/user/{user.id}/set_perm?status=user">Unblock</a>
             '''
         else:
             return "None"
