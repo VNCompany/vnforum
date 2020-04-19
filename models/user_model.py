@@ -26,7 +26,7 @@ class User(SqlAlchemyBase, UserMixin):
     reg_date = sql.Column(sql.DateTime, default=datetime.datetime.now)
     token = sql.Column(sql.String)
 
-    status = sql.Column(sql.Integer, nullable=False, default=1)
+    status = sql.Column(sql.Integer, nullable=False, default=3)
     rating = sql.Column(sql.Integer, default=0)
     votes = sql.Column(sql.String, default="")
 
